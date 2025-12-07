@@ -3,79 +3,57 @@ use ieee.std_logic_1164.all;
 
 entity alu is
     GENERIC (
-        N : integer := 16
+        N : integer := 32
     );
     port (
         A : in std_logic_vector(N-1 downto 0);
         B : in std_logic_vector(N-1 downto 0);
-        S : in std_logic_vector(3 downto 0);
+        S : in std_logic_vector(2 downto 0);
         Cin : in std_logic;
         F : out std_logic_vector(N-1 downto 0);
+        zero_flag:out std_logic;
+        negative_flag: out std_logic;
         Cout : out std_logic
     );
 end entity alu;
-
-Architecture alu_imp of alu is
-Component A_ent is 
+Architecture alu_imp of alu is 
+Component n_bit_adder is
     port (
-        A : in std_logic_vector(N-1 downto 0);
-        B : in std_logic_vector(N-1 downto 0);
-        S : in std_logic_vector(3 downto 0);
-        Cin : in std_logic;
-        F : out std_logic_vector(N-1 downto 0);
-        Cout : out std_logic
+        A: in std_logic_vector(N-1 downto 0);
+        B: in std_logic_vector(N-1 downto 0);
+        Cin: in std_logic;
+        S: out std_logic_vector(N-1 downto 0);
+        cout: out std_logic
     );
 end Component;
-
-Component B_ent is 
-    port (
-        A : in std_logic_vector(N-1 downto 0);
-        B : in std_logic_vector(N-1 downto 0);
-        S : in std_logic_vector(3 downto 0);
-        Cin : in std_logic;
-        F : out std_logic_vector(N-1 downto 0);
-        Cout : out std_logic
-    );
-end Component;
-
-Component C is 
-    port (
-        A : in std_logic_vector(N-1 downto 0);
-        B : in std_logic_vector(N-1 downto 0);
-        S : in std_logic_vector(3 downto 0);
-        Cin : in std_logic;
-        F : out std_logic_vector(N-1 downto 0);
-        Cout : out std_logic
-    );
-end Component;
-
-Component D is 
-    port (
-        A : in std_logic_vector(N-1 downto 0);
-        B : in std_logic_vector(N-1 downto 0);
-        S : in std_logic_vector(3 downto 0);
-        Cin : in std_logic;
-        F : out std_logic_vector(N-1 downto 0);
-        Cout : out std_logic
-    );
-end Component;
-
-
-signal a_f,b_f, c_f, d_f : std_logic_vector(N-1 downto 0);
-signal a_cout,b_cout, c_cout, d_cout : std_logic;
+signal adder_output:std_logic_vector(N-1 downto 0);
+signal b_temp:std_logic_vector(N-1 downto 0);
+signal cin_temp:std_logic;
+signal cout_output: std_logic;
+signal f_temp:std_logic_vector(N-1 downto 0);
 begin
-    a_comp: A_ent GENERIC MAP (N) PORT MAP (A,B,S,Cin,a_f,a_cout);
-    b_comp: B_ent GENERIC MAP (N) PORT MAP (A,B,S,Cin,b_f,b_cout);
-    c_comp: C GENERIC MAP (N) PORT MAP (A,B,S,Cin,c_f,c_cout);
-    d_comp: D GENERIC MAP (N) PORT MAP (A,B,S,Cin,d_f,d_cout);
+    not_b <= NOT B;
+    adder: n_bit_adder GENERIC MAP (N,4) PORT MAP (A, b_temp,cin_temp,adder_output,cout_output);
+    b_temp<=b when s="000"
+    else not_b;
 
-    F <= b_f WHEN S(3 downto 2) = "01" ELSE
-         c_f WHEN S(3 downto 2) = "10" ELSE
-         d_f WHEN S(3 downto 2) = "11" ELSE
-         a_f;
+    cin_temp<='0' when s="000"
+    else '1';
 
-    Cout <= b_cout WHEN S(3 downto 2) = "01" ELSE
-            c_cout WHEN S(3 downto 2) = "10" ELSE
-            d_cout WHEN S(3 downto 2) = "11" ELSE
-            a_cout;
+    f_temp<= A and B when s="010"
+    else NOT A when s= "011"
+    else B when s="100"
+    else adder_output;
+
+    cout<= cout_output when s="000" or s="001"
+    else Cin;
+
+    negative_flag<=f_temp(N-1);
+
+    zero_flag<= '1' when f_temp=(Others => '0')
+    else '0';
+
+
+
+
 end Architecture;
