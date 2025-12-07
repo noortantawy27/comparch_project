@@ -1,0 +1,86 @@
+{D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/reg_file_memory.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/reg_file_memory.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity reg_file_memory
+-- Compiling architecture structure of reg_file_memory
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/reg_file.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/reg_file.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity reg_file
+-- Compiling architecture structure of reg_file
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/my_dff.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/my_dff.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity my_dff
+-- Compiling architecture dff of my_dff
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/ALU.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/ALU.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity alu
+-- Compiling architecture alu_imp of alu
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity n_bit_adder
+-- Compiling architecture n_bit_adder_imp of n_bit_adder
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/pc.vhd} {2 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/pc.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity pc
+-- Compiling architecture a_pc of pc
+** Warning: D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/pc.vhd(17): (vcom-1074) Non-locally static OTHERS choice is allowed only if it is the only choice of the only association.
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/single_bit_adder.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/single_bit_adder.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity single_bit_adder
+-- Compiling architecture single_bit_adder_imp of single_bit_adder
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/ripple_adder.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/ripple_adder.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity ripple_adder
+-- Compiling architecture ripple_adder_imp of ripple_adder
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/my_ndff.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/my_ndff.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity my_ndff
+-- Compiling architecture a_my_ndff of my_ndff
+-- Compiling architecture b_my_ndff of my_ndff
+-- Loading entity my_ndff
+
+} {} {}} {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/carry_select_adder.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/carry_select_adder.vhd}
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity carry_select_adder
+-- Compiling architecture carry_select_adder_imp of carry_select_adder
+
+} {} {}}

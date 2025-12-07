@@ -1,0 +1,289 @@
+# Compile of ALU.vhd failed with 4 errors.
+# Compile of ALU.vhd failed with 4 errors.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd failed with 1 errors.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 2 failed with 5 errors.
+# Compile of pc.vhd failed with 1 errors.
+# Compile of pc.vhd failed with 1 errors.
+# Compile of pc.vhd was successful.
+# Compile of ALU.vhd failed with 4 errors.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 1 failed with 4 errors.
+# Compile of pc.vhd was successful.
+# Compile of ALU.vhd failed with 1 errors.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd failed with 1 errors.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 2 failed with 2 errors.
+# Compile of pc.vhd was successful with warnings.
+# Compile of pc.vhd was successful with warnings.
+# Compile of ALU.vhd failed with 1 errors.
+# Compile of ALU.vhd failed with 2 errors.
+# Compile of ALU.vhd was successful.
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:09:34 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# ** Fatal: (vsim-3348) Port length (16) does not match actual length (32) for port "/alu/adder/A".
+#    Time: 0 ps  Iteration: 0  Instance: /alu/adder File: D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd Line: 10
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 00:09:35 on Dec 08,2025, Elapsed time: 0:00:01
+# Errors: 1, Warnings: 18
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:10:32 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# ** Fatal: (vsim-3348) Port length (16) does not match actual length (32) for port "/alu/adder/A".
+#    Time: 0 ps  Iteration: 0  Instance: /alu/adder File: D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd Line: 10
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 00:10:32 on Dec 08,2025, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 1
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:10:46 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# ** Fatal: (vsim-3348) Port length (16) does not match actual length (32) for port "/alu/adder/A".
+#    Time: 0 ps  Iteration: 0  Instance: /alu/adder File: D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd Line: 10
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 00:10:46 on Dec 08,2025, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 1
+# Compile of ALU.vhd was successful.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd was successful with warnings.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 0 failed with no errors.
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:11:09 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# Loading work.ripple_adder(ripple_adder_imp)
+# Loading work.single_bit_adder(single_bit_adder_imp)
+# Loading work.carry_select_adder(carry_select_adder_imp)
+# ** Fatal: (vsim-3734) Index value 4 is out of range 3 downto 0.
+#    Time: 0 ps  Iteration: 0  Instance: /alu/adder/GEN_LOOP(4)/cs File: D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd Line: 41
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 00:11:09 on Dec 08,2025, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 2
+# Compile of ALU.vhd was successful.
+# Compile of ALU.vhd was successful.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd was successful with warnings.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 0 failed with no errors.
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:13:48 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# Loading work.ripple_adder(ripple_adder_imp)
+# Loading work.single_bit_adder(single_bit_adder_imp)
+# Loading work.carry_select_adder(carry_select_adder_imp)
+quit -sim
+# End time: 00:14:11 on Dec 08,2025, Elapsed time: 0:00:23
+# Errors: 0, Warnings: 4
+# Compile of ALU.vhd was successful.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd was successful with warnings.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 0 failed with no errors.
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:15:44 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# ** Fatal: (vsim-3348) Port length (32) does not match actual length (16) for port "/alu/adder/A".
+#    Time: 0 ps  Iteration: 0  Instance: /alu/adder File: D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd Line: 10
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 00:15:44 on Dec 08,2025, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 2
+# Compile of ALU.vhd was successful.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd was successful with warnings.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 0 failed with no errors.
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:16:03 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# Loading work.ripple_adder(ripple_adder_imp)
+# Loading work.single_bit_adder(single_bit_adder_imp)
+# Loading work.carry_select_adder(carry_select_adder_imp)
+# ** Fatal: (vsim-3734) Index value 4 is out of range 3 downto 0.
+#    Time: 0 ps  Iteration: 0  Instance: /alu/adder/GEN_LOOP(4)/cs File: D:/Gam3a/Fall 2025/Computer Architechture/Project/Project/comparch_project/n_bit_adder.vhd Line: 41
+# FATAL ERROR while loading design
+# Error loading design
+# End time: 00:16:03 on Dec 08,2025, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 2
+# Compile of ALU.vhd was successful.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd was successful with warnings.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 0 failed with no errors.
+vsim -gui work.alu
+# vsim -gui work.alu 
+# Start time: 00:21:14 on Dec 08,2025
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.alu(alu_imp)
+# Loading work.n_bit_adder(n_bit_adder_imp)
+# Loading work.ripple_adder(ripple_adder_imp)
+# Loading work.single_bit_adder(single_bit_adder_imp)
+# Loading work.carry_select_adder(carry_select_adder_imp)
+add wave -position insertpoint  \
+sim:/alu/N \
+sim:/alu/A \
+sim:/alu/B \
+sim:/alu/S \
+sim:/alu/Cin \
+sim:/alu/F \
+sim:/alu/zero_flag \
+sim:/alu/negative_flag \
+sim:/alu/Cout \
+sim:/alu/adder_output \
+sim:/alu/b_temp \
+sim:/alu/cin_temp \
+sim:/alu/cout_output \
+sim:/alu/not_b \
+sim:/alu/f_temp
+force -freeze sim:/alu/S 000 0
+force -freeze sim:/alu/A {"0x01"} 0
+# Value length (6) does not equal array index length (32).
+# ** UI-Msg: (vsim-4011) Invalid force value: {"0x01"} 0.
+# 
+force -freeze sim:/alu/A {"0x00000001"} 0
+# Value length (12) does not equal array index length (32).
+# ** UI-Msg: (vsim-4011) Invalid force value: {"0x00000001"} 0.
+# 
+force -freeze sim:/alu/A x\"00000001\" 0
+force -freeze sim:/alu/B x\"00000001\" 0
+force -freeze sim:/alu/Cin 0 0
+run
+force -freeze sim:/alu/S 001 0
+run
+force -freeze sim:/alu/A x\"00010000\" 0
+run
+force -freeze sim:/alu/S 000 0
+run
+force -freeze sim:/alu/S 010 0
+run
+force -freeze sim:/alu/A x\"00000001\" 0
+run
+force -freeze sim:/alu/A x\"10000001\" 0
+force -freeze sim:/alu/S 000 0
+run
+force -freeze sim:/alu/A x\"10000000\" 0
+run
+force -freeze sim:/alu/A x\"11111111\" 0
+run
+force -freeze sim:/alu/A x\"ffffffff\" 0
+run
+force -freeze sim:/alu/S 001 0
+run
+force -freeze sim:/alu/A 11111111111111111111111111111111 0
+force -freeze sim:/alu/B x\"0000ffff\" 0
+run
+force -freeze sim:/alu/S 000 0
+run
+force -freeze sim:/alu/S 010 0
+run
+force -freeze sim:/alu/S 011 0
+run
+force -freeze sim:/alu/S 100 0
+run
+quit -sim
+# End time: 00:29:33 on Dec 08,2025, Elapsed time: 0:08:19
+# Errors: 0, Warnings: 2
+# Compile of ALU.vhd was successful.
+# Compile of carry_select_adder.vhd was successful.
+# Compile of my_dff.vhd was successful.
+# Compile of my_ndff.vhd was successful.
+# Compile of n_bit_adder.vhd was successful.
+# Compile of pc.vhd was successful with warnings.
+# Compile of reg_file.vhd was successful.
+# Compile of reg_file_memory.vhd was successful.
+# Compile of ripple_adder.vhd was successful.
+# Compile of single_bit_adder.vhd was successful.
+# 10 compiles, 0 failed with no errors.

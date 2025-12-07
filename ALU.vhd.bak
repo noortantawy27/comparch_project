@@ -52,7 +52,6 @@ begin
     negative_flag<=f_temp(N-1);
     zero_flag<= '1' when f_temp="00000000000000000000000000000000"
     else '0';
-	F<=f_temp;
 
 
 
