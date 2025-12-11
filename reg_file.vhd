@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity reg_file is
-    generic( N: integer := 12; M: integer := 7 );
+    generic( N: integer := 32; M: integer := 8 );
     port(
         clk, rst : in std_logic;
         readaddress1, readaddress2 : in std_logic_vector(2 downto 0);
@@ -53,10 +53,9 @@ begin
         if (wenable2 = '1') then
             d_regs(to_integer(unsigned(writeaddress2))) <= writeport2;
         end if;
-    end process;
 
-    
-    readport1 <= q_regs(to_integer(unsigned(readaddress1)));
-    readport2 <= q_regs(to_integer(unsigned(readaddress2)));
+        readport1 <= q_regs(to_integer(unsigned(readaddress1)));
+        readport2 <= q_regs(to_integer(unsigned(readaddress2)));
+    end process;
 
 end structure;
