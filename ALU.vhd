@@ -35,19 +35,19 @@ signal f_temp:std_logic_vector(N-1 downto 0);
 begin
     not_b <= NOT B;
     adder: n_bit_adder GENERIC MAP (N,4) PORT MAP (A, b_temp,cin_temp,adder_output,cout_output);
-    b_temp<=b when s="000"
-    else not_b;
+    b_temp <= b when s="000"       -- ADD: Use B directly
+      else not_b;              -- SUB: Use NOT B
 
-    cin_temp<='0' when s="000"
-    else '1';
+    cin_temp <= '0' when s="000"   -- ADD: Cin = 0
+        else '1';               -- SUB: Cin = 1 (for 2's complement)
 
-    f_temp<= A and B when s="010"
-    else NOT A when s= "011"
-    else B when s="100"
-    else adder_output;
+    f_temp <= A and B when s="010" -- AND
+        else NOT A when s="011"   -- NOT
+        else B when s="100"       -- PASS B
+        else adder_output;        -- ADD/SUB
 
-    cout<= cout_output when s="000" or s="001"
-    else Cin;
+    cout <= cout_output when s="000" or s="001"  -- Carry only for ADD/SUB
+    else Cin;                                  -- Otherwise pass through
 
     negative_flag<=f_temp(N-1);
     zero_flag<= '1' when f_temp="00000000000000000000000000000000"
