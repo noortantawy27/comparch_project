@@ -34,6 +34,7 @@ regwrite1_q: in std_logic;
 regwrite2_q: in std_logic;
 inputenable_q:in std_logic;
 memwrite_q:in std_logic;
+memread_q:in std_logic;
 mem_add_src_q: in std_logic;
 mem_data_src_q: in std_logic;
 sp_dec_q: in std_logic;
@@ -69,9 +70,9 @@ component reg_file_memory is
     port(
         clk, rst : in std_logic;
         address, instruction_address  : in std_logic_vector(31 downto 0);
-        mem_write : in std_logic;
+        mem_write, mem_read : in std_logic;
         writedata : in std_logic_vector(31 downto 0);
-        readdata, instruction : out std_logic_vector(31 downto 0)
+        mem_output : out std_logic_vector(31 downto 0)
     );
 end component;
 component pc is
@@ -84,7 +85,6 @@ component pc is
 end component;
 signal regular_pc, pc_plus_one: std_logic_vector(31 downto 0);
 signal pc_component_d, pc_component_q, readdate: std_logic_vector(31 downto 0);
-signal instruction_from_mem: std_logic_vector(31 downto 0);
 signal mem_address, writedata, readdata: std_logic_vector(31 downto 0);
 signal sp_or_alu: std_logic_vector(31 downto 0);
 constant RESET_INSTR : std_logic_vector(31 downto 0) := "10000" & X"000000" & "000";
@@ -92,7 +92,7 @@ constant INTERRUPT_INSTR : std_logic_vector(31 downto 0) := "10011" & X"000000" 
 
 begin
     -- mem
-    memory: reg_file_memory port map (clk, '0', mem_address, pc_component_q, memwrite_q, writedata, readdata, instruction_from_mem);
+    memory: reg_file_memory port map (clk, '0', mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata);
 
     -- fetch section 
     -- handling pc 
@@ -115,7 +115,7 @@ begin
     -- handling the instruction
     instruction_d <= RESET_INSTR when reset = '1'
     else INTERRUPT_INSTR when interrupt = '1'
-    else instruction_from_mem;
+    else readdata;
 
     -- mem section
     -- output sp to excute section
