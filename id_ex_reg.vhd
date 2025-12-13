@@ -29,6 +29,8 @@ entity id_ex_reg is
         inputenable_d:in std_logic;
         memwrite_q:out std_logic;
         memwrite_d:in std_logic;
+        memread_q:out std_logic;
+        memread_d:in std_logic;
         mem_add_src_q: out std_logic;
         mem_add_src_d: in std_logic;
         mem_data_src_q: out std_logic;
@@ -75,6 +77,7 @@ begin
         regwrite2_q<='0';
         inputenable_q<='0';
         memwrite_q<='0';
+        memread_q<='0';
         mem_add_src_q<='0';
         mem_data_src_q<='0';
         sp_dec_q<='0';
@@ -102,6 +105,7 @@ begin
         regwrite2_q<=regwrite2_d;
         inputenable_q<=inputenable_d;
         memwrite_q<=memwrite_d;
+        memread_q<=memread_d;
         mem_add_src_q<=mem_add_src_d;
         mem_data_src_q<=mem_data_src_d;
         sp_dec_q<=sp_dec_d;

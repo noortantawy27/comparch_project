@@ -18,6 +18,7 @@ entity execute is
         regwrite2_q: in std_logic;
         inputenable_q:in std_logic;
         memwrite_q:in std_logic;
+        memread_q:in std_logic;
         mem_add_src_q: in std_logic;
         mem_data_src_q: in std_logic;
         sp_dec_q: in std_logic; --meen da??? ha pass it for now then nebaa neshouf
@@ -50,6 +51,7 @@ entity execute is
         regwrite2_d:out std_logic;
         inputenable_d:out std_logic;
         memwrite_d:out std_logic;
+        memread_d:out std_logic;
         mem_add_src_d: out std_logic;
         mem_data_src_d: out std_logic;
         sp_dec_d: out std_logic; 
@@ -257,6 +259,7 @@ begin
     regwrite2_d <= regwrite2_q;
     inputenable_d <= inputenable_q;
     memwrite_d <= memwrite_q;
+    memread_d <= memread_q;
     mem_add_src_d <= mem_add_src_q;
     mem_data_src_d <= mem_data_src_q;
     sp_dec_d <= sp_dec_q;

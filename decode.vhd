@@ -19,7 +19,7 @@ entity decode is
         inputport_out: out std_logic_vector(31 downto 0); -- hay3ady 3alatool bas et2aked.
         readaddress1_out,readaddress2_out:out std_logic_vector(2 downto 0); -- hanakhdo mn el instruction w ye3ady.
         -- control signal outputs
-        mem_write, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
+        mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	pc_enable, set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
@@ -46,7 +46,7 @@ component reg_file
 component control_unit 
      port (
         opcode : in std_logic_vector(4 downto 0);
-        mem_write, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
+        mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	pc_enable, set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
@@ -90,6 +90,7 @@ begin
     controlunit: control_unit port map (
         opcode=>instruction_in(31 downto 27),
         mem_write=>mem_write,
+        mem_read=>mem_read,
         reg_write1=>reg_write1,
         reg_write2=>reg_write2,
         mem_to_reg=>mem_to_reg,
