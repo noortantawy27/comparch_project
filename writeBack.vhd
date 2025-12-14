@@ -47,7 +47,7 @@ end entity;
 
 architecture rtl of writeBack is
 begin
-    output_port: process
+    output_port: process (outputPortEnable, readData2_in)
     begin
         if outputPortEnable = '1' then
             outputPort <= readData2_in;
@@ -56,7 +56,7 @@ begin
         end if ;
     end process;
 
-    write_back: process
+    write_back: process (regWrite2_in, inputPortEnable, memToReg, readData2_in, inputPortData, memData, aluResult)
     begin
         if regWrite2_in = '1' then
             writeBack_out <= readData2_in;
