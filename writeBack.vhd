@@ -24,7 +24,6 @@ entity writeBack is
         readData1_in: in std_logic_vector(31 downto 0); -- Read data 1
         readData1_out: out std_logic_vector(31 downto 0); -- Read data 1
         readData2_in: in std_logic_vector(31 downto 0); -- Read data 2
-        readData2_out: out std_logic_vector(31 downto 0); -- Read data 2
         writeAddress1_in: in std_logic_vector(2 downto 0); -- Write address 1
         writeAddress1_out: out std_logic_vector(2 downto 0); -- Write address 1
         writeAddress2_in: in std_logic_vector(2 downto 0); -- Write address 2

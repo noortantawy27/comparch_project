@@ -17,7 +17,7 @@ entity decode is
         readdata2:out std_logic_vector(31 downto 0);  -- hayetla3 mn regfile 3alatool.
         immediate: out std_logic_vector(31 downto 0); -- sign extended code soghayar.
         inputport_out: out std_logic_vector(31 downto 0); -- hay3ady 3alatool bas et2aked.
-        readaddress1_out,readaddress2_out:out std_logic_vector(2 downto 0); -- hanakhdo mn el instruction w ye3ady.
+        writeaddress1_out, writeaddress2_out:out std_logic_vector(2 downto 0); -- hanakhdo mn el instruction w ye3ady.
         -- control signal outputs
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
@@ -81,8 +81,8 @@ begin
     immediate<=extenedimmediate32bit; -- output
 
     -- outputs elly hat3ady 3alatool.
-        readaddress1_out<= instruction_in(26 downto 24);
-        readaddress2_out<= instruction_in(23 downto 21);
+        writeaddress1_out<= instruction_in(26 downto 24);
+        writeaddress2_out<= instruction_in(23 downto 21);
         inputport_out<=inputport_in;
         pc_out<=pc_in;
     

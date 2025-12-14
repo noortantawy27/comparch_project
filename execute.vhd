@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 entity execute is 
     port(
-        clk,rst, enable:in std_logic; 
+        clk,rst :in std_logic; 
         --output of register id/ex
         immediate_q: in std_logic_vector(31 downto 0);
         pc1_q: in std_logic_vector(31 downto 0);
