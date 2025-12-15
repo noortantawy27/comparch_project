@@ -140,4 +140,6 @@ begin
         mem_read <= '1' when POP | LDM | LDD | RET | INT | RTI | RESET | INTERRUPT,
                     '0' when others;
 
+    pc_enable <= '1';
+
 end Architecture;

@@ -346,7 +346,7 @@ end component;
 
 signal pc_plus_immediate : std_logic_vector(31 downto 0);
 signal do_branch : std_logic;
-signal dummy_pc_enable : std_logic;
+signal dummy_pc_enable : std_logic :='1';
 signal rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb : std_logic;
 signal enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb : std_logic;
 signal instruction_if_id_in, input_port_if_id_in : std_logic_vector(31 downto 0);
@@ -410,7 +410,7 @@ signal mem_data_src_ex_mem_out : std_logic;
 signal sp_dec_ex_mem_out : std_logic;
 signal pc_src_ex_mem_out : std_logic;
 
-signal offset_assembler : std_logic_vector(31 downto 0);
+signal offset_assembler : std_logic_vector(31 downto 0) := x"000000FF";
 
 signal memory_mem_wb_in, alu_mem_wb_in, inputport_mem_wb_in, readdata1_mem_wb_in : std_logic_vector(31 downto 0);
 signal readdata2_mem_wb_in : std_logic_vector(31 downto 0);

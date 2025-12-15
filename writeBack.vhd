@@ -68,4 +68,11 @@ begin
             writeBack_out <= aluResult;
         end if;
     end process;
+
+    readData1_out <= readData1_in;
+    writeAddress1_out <= writeAddress1_in;
+    writeAddress2_out <= writeAddress2_in;
+    regWrite1_out <= regWrite1_in;
+    regWrite2_out <= regWrite2_in;
+    
 end architecture;
