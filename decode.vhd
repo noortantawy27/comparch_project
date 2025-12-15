@@ -63,7 +63,7 @@ begin
     port map
     (
         clk=>clk,
-        rst=>'0',
+        rst=>rst,
         readaddress1=>instruction_in(23 downto 21),
         readaddress2=>instruction_in(20 downto 18),
         writeaddress1=>mem_rb_writeaddress1,

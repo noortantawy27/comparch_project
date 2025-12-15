@@ -92,7 +92,7 @@ constant INTERRUPT_INSTR : std_logic_vector(31 downto 0) := "10011" & X"000000" 
 
 begin
     -- mem
-    memory: reg_file_memory port map (clk, '0', mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata);
+    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata);
 
     -- fetch section 
     -- handling pc 
@@ -102,7 +102,7 @@ begin
     pc_component_d <=  readdata when pc_src_q = '1'
     else regular_pc;
 
-    pc_component: pc port map ('0', clk, pc_enable, pc_component_d, pc_component_q);
+    pc_component: pc port map (reset, clk, pc_enable, pc_component_d, pc_component_q);
 
     pc_plus_one <= std_logic_vector(to_unsigned(1 + to_integer(unsigned(pc_component_q)), 32));
 
