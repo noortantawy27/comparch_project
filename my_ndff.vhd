@@ -14,7 +14,7 @@ process(Clk,Rst)
 begin
     if(Rst='1')then
         q<=(others=>'0');
-    elsif Clk'event and Clk = '1' then 
+    elsif rising_edge(clk) then 
         q<=d;
         
     end if;

@@ -16,46 +16,30 @@ end reg_file;
 
 architecture structure of reg_file is
 
-    
     type reg_array is array (0 to M-1) of std_logic_vector(N-1 downto 0);
-    signal q_regs, d_regs : reg_array;
-
-    component my_ndff is
-        generic (n : integer := 12);
-        port(
-            Rst, Clk : in std_logic;
-            d : in std_logic_vector(n-1 downto 0);
-            q : out std_logic_vector(n-1 downto 0)
-        );
-    end component;
+    signal q_regs : reg_array;  -- the actual registers
 
 begin
 
-    
-    generate_regs : for i in 0 to M-1 generate
-        reg_inst : my_ndff
-            generic map (n => N)
-            port map (
-                Rst => rst,
-                Clk => clk,
-                d   => d_regs(i),
-                q   => q_regs(i)
-            );
+    -- instantiate D flip-flops for each register
+    gen_regs: for i in 0 to M-1 generate
+    begin
+        process(clk, rst)
+        begin
+            if rst = '1' then
+                q_regs(i) <= (others => '0');
+            elsif rising_edge(clk) then
+                if wenable1 = '1' and to_integer(unsigned(writeaddress1)) = i then
+                    q_regs(i) <= writeport1;
+                elsif wenable2 = '1' and to_integer(unsigned(writeaddress2)) = i then
+                    q_regs(i) <= writeport2;
+                end if;
+            end if;
+        end process;
     end generate;
 
-    
-    process(wenable1, wenable2, writeaddress1, writeaddress2, writeport1, writeport2, q_regs)
-    begin
-        if (wenable1 = '1') then
-            d_regs(to_integer(unsigned(writeaddress1))) <= writeport1;
-        end if;
+    -- combinational read
+    readport1 <= q_regs(to_integer(unsigned(readaddress1)));
+    readport2 <= q_regs(to_integer(unsigned(readaddress2)));
 
-        if (wenable2 = '1') then
-            d_regs(to_integer(unsigned(writeaddress2))) <= writeport2;
-        end if;
-
-        readport1 <= q_regs(to_integer(unsigned(readaddress1)));
-        readport2 <= q_regs(to_integer(unsigned(readaddress2)));
-    end process;
-
-end structure;
+end architecture;
