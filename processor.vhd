@@ -96,7 +96,7 @@ component decode is
         -- control signal outputs
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
-        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	pc_enable, set_carry, clk_enable : out std_logic;
+        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0)
     );
@@ -344,9 +344,19 @@ component mem_wb_reg is
         );
 end component;
 
+component hazard_unit is 
+port (
+    reset : in std_logic;
+    branch, id_ex_mem_read, id_ex_mem_write : in std_logic;
+    rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb : out std_logic;
+    enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb : out std_logic;
+    pc_enable: out std_logic
+);
+end component;
+
 signal pc_plus_immediate : std_logic_vector(31 downto 0);
 signal do_branch : std_logic;
-signal dummy_pc_enable : std_logic :='1';
+signal pc_enable : std_logic;
 signal rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb : std_logic;
 signal enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb : std_logic;
 signal instruction_if_id_in, input_port_if_id_in : std_logic_vector(31 downto 0);
@@ -445,7 +455,7 @@ interrupt => interrupt,
 pc_plus_immediate => pc_plus_immediate,
 do_branch => do_branch,
 -- input from hazard detection
-pc_enable => dummy_pc_enable,
+pc_enable => pc_enable,
 -- output to if/id reg
 instruction_d => instruction_if_id_in,
 pc_d => pc_if_id_in,
@@ -550,7 +560,6 @@ port map(
     mem_add_src => mem_add_src_id_ex_in, 
     sp_inc => inc_sp_id_ex_in, 
     sp_dec => sp_dec_id_ex_in,	
-    pc_enable => dummy_pc_enable, 
     set_carry => set_carry_id_ex_in, 
     clk_enable => clk_enable,
     alu_control => alu_control_id_ex_in,
@@ -786,4 +795,20 @@ excute_comp: execute
         writeBack_out => mem_rb_writedata1
     );
 
+    hazard_comp: hazard_unit
+    port map (
+        reset => reset,
+        branch => do_branch, 
+        id_ex_mem_read => memread_id_ex_out, 
+        id_ex_mem_write => memwrite_id_ex_out,
+        rst_if_id => rst_if_id,
+        rst_id_ex => rst_id_ex, 
+        rst_ex_mem => rst_ex_mem, 
+        rst_mem_wb => rst_mem_wb,
+        enable_if_id => enable_if_id, 
+        enable_id_ex => enable_id_ex, 
+        enable_ex_mem => enable_ex_mem, 
+        enable_mem_wb => enable_mem_wb,
+        pc_enable => pc_enable   
+    );
 end architecture behaviour;

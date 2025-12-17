@@ -45,15 +45,6 @@ add wave -position insertpoint  \
 sim:/processor/immediate_id_ex_in
 force -freeze sim:/processor/reset 1 0
 force -freeze sim:/processor/clk 1 0, 0 {50 ps} -r 100
-force -freeze sim:/processor/dummy_pc_enable 1 0
-force -freeze sim:/processor/rst_if_id 1 0
-force -freeze sim:/processor/rst_id_ex 1 0
-force -freeze sim:/processor/rst_ex_mem 1 0
-force -freeze sim:/processor/rst_mem_wb 1 0
-force -freeze sim:/processor/enable_if_id 1 0
-force -freeze sim:/processor/enable_ex_mem 1 0
-force -freeze sim:/processor/enable_mem_wb 1 0
-force -freeze sim:/processor/enable_id_ex 1 0
 run
 force -freeze sim:/processor/reset 0 0
 force -freeze sim:/processor/rst_if_id 0 0
@@ -78,3 +69,9 @@ run
 run
 run
 run
+run
+run
+run
+run
+run
+

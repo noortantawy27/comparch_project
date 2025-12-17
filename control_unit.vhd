@@ -6,7 +6,7 @@ entity control_unit is
         opcode : in std_logic_vector(4 downto 0);
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
-        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	pc_enable, set_carry, clk_enable : out std_logic;
+        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec, set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0)
     );
@@ -139,7 +139,5 @@ begin
     with opcode select
         mem_read <= '1' when POP | LDM | LDD | RET | INT | RTI | RESET | INTERRUPT,
                     '0' when others;
-
-    pc_enable <= '1';
 
 end Architecture;

@@ -21,7 +21,7 @@ entity decode is
         -- control signal outputs
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
-        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	pc_enable, set_carry, clk_enable : out std_logic;
+        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0)
     );
@@ -48,7 +48,7 @@ component control_unit
         opcode : in std_logic_vector(4 downto 0);
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
-        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	pc_enable, set_carry, clk_enable : out std_logic;
+        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0)
     );
@@ -106,7 +106,6 @@ begin
         mem_add_src=>mem_add_src,
         sp_inc=>sp_inc,
         sp_dec=>sp_dec,
-        pc_enable=>pc_enable,
         set_carry=>set_carry,
         clk_enable=>clk_enable,
         alu_control=>alu_control,
