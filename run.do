@@ -44,43 +44,32 @@ sim:/processor/decode_comp/regfile/writeport1
 add wave -position insertpoint  \
 sim:/processor/immediate_id_ex_in
 add wave -position insertpoint  \
-sim:/processor/memwrite_ex_mem_in
+sim:/processor/excute_comp/branch_q
 add wave -position insertpoint  \
-sim:/processor/memwrite_id_ex_out
+sim:/processor/excute_comp/branch_type_q
 add wave -position insertpoint  \
-sim:/processor/FetchMem_comp/memwrite_q
+sim:/processor/FetchMem_comp/pc_plus_immediate \
+sim:/processor/FetchMem_comp/do_branch
 add wave -position insertpoint  \
-sim:/processor/FetchMem_comp/mem_address
-add wave -position insertpoint  \
-sim:/processor/FetchMem_comp/writedata
-add wave -position insertpoint  \
-sim:/processor/excute_comp/alu_a \
-sim:/processor/excute_comp/alu_b
-add wave -position insertpoint  \
-sim:/processor/excute_comp/alu_result
-add wave -position insertpoint  \
-sim:/processor/FetchMem_comp/alu_q
-add wave -position insertpoint  \
-sim:/processor/FetchMem_comp/sp_or_alu
-add wave -position insertpoint  \
-sim:/processor/FetchMem_comp/offset
+sim:/processor/decode_comp/controlunit/branch
 force -freeze sim:/processor/reset 1 0
 force -freeze sim:/processor/clk 1 0, 0 {50 ps} -r 100
 run
 force -freeze sim:/processor/reset 0 0
-force -freeze sim:/processor/rst_if_id 0 0
-force -freeze sim:/processor/rst_id_ex 0 0
-force -freeze sim:/processor/rst_ex_mem 0 0
-force -freeze sim:/processor/rst_mem_wb 0 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(4) b\"10111010000000000000000000011000" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(5) b\"10111011000000000000000000001100" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(6) b\"10111001000000000000000000000100" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(7) b\"10111100000000000000000000010000" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(8) b\"10111101000000000000000000001100" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(9) b\"01111011011010000000000000000000" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(10) b\"01001110001010000000000000000000" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(11) b\"01110000001010000000000000000000" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(12) b\"10101010000000000000000000101000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(4) b\"01111011011010000000000000000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(5) b\"01001110001010000000000000000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(6) b\"11001000000000000000000000111100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(7) b\"01001110001010000000000010000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(8) b\"01001110001010000000000000000001" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(9) b\"01001110001010000000000000001000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(10) b\"10111100000000000000000000010000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(11) b\"10111101000000000000000000001100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(12) b\"10111001000000000000000000000100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(13) b\"10111111000000000000000000011100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(14) b\"10111000000000000000000000010100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(15) b\"01111011011010000000000000000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(16) b\"01001110001010000000000000000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(17) b\"01110000110010000000000000000000" 0
 run
 run
 run

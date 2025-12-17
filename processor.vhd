@@ -307,7 +307,9 @@ component ex_mem_reg is
         sp_dec_q: out std_logic;
         sp_dec_d: in std_logic;
         pc_src_q: out std_logic;
-        pc_src_d: in std_logic
+        pc_src_d: in std_logic;
+        branch_q: out std_logic;
+        branch_d: in std_logic
         );
 end component;
 
@@ -345,10 +347,11 @@ end component;
 
 component hazard_unit is 
 port (
-    reset : in std_logic;
-    branch, id_ex_mem_read, id_ex_mem_write : in std_logic;
-    rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb : out std_logic;
-    enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb : out std_logic;
+    reset: in std_logic;
+    id_ex_mem_read, id_ex_mem_write: in std_logic;
+    rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb: out std_logic;
+    branch1, branch2 : in std_logic; 
+    enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb: out std_logic;
     pc_enable: out std_logic
 );
 end component;
@@ -418,6 +421,7 @@ signal mem_add_src_ex_mem_out : std_logic;
 signal mem_data_src_ex_mem_out : std_logic;
 signal sp_dec_ex_mem_out : std_logic;
 signal pc_src_ex_mem_out : std_logic;
+signal branch_ex_mem_out : std_logic;
 
 signal offset_assembler : std_logic_vector(31 downto 0) := x"000000FF";
 
@@ -732,7 +736,9 @@ excute_comp: execute
         sp_dec_q => sp_dec_ex_mem_out,
         sp_dec_d => sp_dec_ex_mem_in,
         pc_src_q => pc_src_ex_mem_out,
-        pc_src_d => pc_src_ex_mem_in
+        pc_src_d => pc_src_ex_mem_in,
+        branch_q => branch_ex_mem_out,
+        branch_d => do_branch
     );
 
     mem_wb_comp: mem_wb_reg 
@@ -796,13 +802,14 @@ excute_comp: execute
     hazard_comp: hazard_unit
     port map (
         reset => reset,
-        branch => do_branch, 
         id_ex_mem_read => memread_id_ex_out, 
         id_ex_mem_write => memwrite_id_ex_out,
         rst_if_id => rst_if_id,
         rst_id_ex => rst_id_ex, 
         rst_ex_mem => rst_ex_mem, 
         rst_mem_wb => rst_mem_wb,
+        branch1 => do_branch,
+        branch2 => branch_ex_mem_out, 
         enable_if_id => enable_if_id, 
         enable_id_ex => enable_id_ex, 
         enable_ex_mem => enable_ex_mem, 

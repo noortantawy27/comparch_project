@@ -40,7 +40,9 @@ entity ex_mem_reg is
         sp_dec_q: out std_logic;
         sp_dec_d: in std_logic;
         pc_src_q: out std_logic;
-        pc_src_d: in std_logic
+        pc_src_d: in std_logic;
+        branch_q: out std_logic;
+        branch_d: in std_logic
         );
 end ex_mem_reg;
 architecture dff of ex_mem_reg is
@@ -67,6 +69,7 @@ begin
         mem_data_src_q<='0';
         sp_dec_q<='0';
         pc_src_q<='0';
+        branch_q <= '0';
     elsif clk'event and clk = '1' and enable = '1' then 
         inputport_q<=inputport_d;
         sp_q<=sp_d;
@@ -87,6 +90,7 @@ begin
         mem_data_src_q<=mem_data_src_d;
         sp_dec_q<=sp_dec_d;
         pc_src_q<=pc_src_d;
+        branch_q <= branch_d;
     end if;
 end process;
 end dff; 
