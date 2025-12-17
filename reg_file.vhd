@@ -31,7 +31,8 @@ begin
             elsif rising_edge(clk) then
                 if wenable1 = '1' and to_integer(unsigned(writeaddress1)) = i then
                     q_regs(i) <= writeport1;
-                elsif wenable2 = '1' and to_integer(unsigned(writeaddress2)) = i then
+                end if;
+                if wenable2 = '1' and to_integer(unsigned(writeaddress2)) = i then
                     q_regs(i) <= writeport2;
                 end if;
             end if;

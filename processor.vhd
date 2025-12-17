@@ -423,7 +423,7 @@ signal sp_dec_ex_mem_out : std_logic;
 signal pc_src_ex_mem_out : std_logic;
 signal branch_ex_mem_out : std_logic;
 
-signal offset_assembler : std_logic_vector(31 downto 0) := x"000000FF";
+signal offset_assembler : std_logic_vector(31 downto 0) := x"00000000";
 
 signal memory_mem_wb_in, alu_mem_wb_in, inputport_mem_wb_in, readdata1_mem_wb_in : std_logic_vector(31 downto 0);
 signal readdata2_mem_wb_in : std_logic_vector(31 downto 0);
