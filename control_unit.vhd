@@ -64,7 +64,7 @@ begin
                      '0' when others;
 
     with opcode select
-        mem_to_reg <= '1' when POP | LDM | LDD,
+        mem_to_reg <= '1' when POP | LDD,
                      '0' when others;
 
     with opcode select

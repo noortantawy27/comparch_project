@@ -41,6 +41,8 @@ add wave -position insertpoint  \
 sim:/processor/decode_comp/regfile/writeaddress1 \
 sim:/processor/decode_comp/regfile/wenable1 \
 sim:/processor/decode_comp/regfile/writeport1
+add wave -position insertpoint  \
+sim:/processor/immediate_id_ex_in
 force -freeze sim:/processor/reset 1 0
 force -freeze sim:/processor/clk 1 0, 0 {50 ps} -r 100
 force -freeze sim:/processor/dummy_pc_enable 1 0
@@ -58,4 +60,21 @@ force -freeze sim:/processor/rst_if_id 0 0
 force -freeze sim:/processor/rst_id_ex 0 0
 force -freeze sim:/processor/rst_ex_mem 0 0
 force -freeze sim:/processor/rst_mem_wb 0 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(4) 01001001010011000000000000000000 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(4) b\"10111010000000000000000000011000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(5) b\"10111011000000000000000000001100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(6) b\"10111001000000000000000000000100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(7) b\"10111100000000000000000000010000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(8) b\"10111101000000000000000000001100" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(9) b\"01111011011010000000000000000000" 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
