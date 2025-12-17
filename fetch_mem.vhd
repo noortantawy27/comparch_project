@@ -56,7 +56,6 @@ outputenable_d:out std_logic;
 regwrite1_d:out std_logic;
 regwrite2_d:out std_logic;
 inputenable_d:out std_logic;
-memwrite_d:out std_logic;
 
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
@@ -145,6 +144,4 @@ begin
     regwrite1_d <= regwrite1_q;
     regwrite2_d <= regwrite2_q;
     inputenable_d <= inputenable_q;
-    memwrite_d <= memwrite_q;
-
 end architecture imp;

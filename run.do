@@ -43,6 +43,27 @@ sim:/processor/decode_comp/regfile/wenable1 \
 sim:/processor/decode_comp/regfile/writeport1
 add wave -position insertpoint  \
 sim:/processor/immediate_id_ex_in
+add wave -position insertpoint  \
+sim:/processor/memwrite_ex_mem_in
+add wave -position insertpoint  \
+sim:/processor/memwrite_id_ex_out
+add wave -position insertpoint  \
+sim:/processor/FetchMem_comp/memwrite_q
+add wave -position insertpoint  \
+sim:/processor/FetchMem_comp/mem_address
+add wave -position insertpoint  \
+sim:/processor/FetchMem_comp/writedata
+add wave -position insertpoint  \
+sim:/processor/excute_comp/alu_a \
+sim:/processor/excute_comp/alu_b
+add wave -position insertpoint  \
+sim:/processor/excute_comp/alu_result
+add wave -position insertpoint  \
+sim:/processor/FetchMem_comp/alu_q
+add wave -position insertpoint  \
+sim:/processor/FetchMem_comp/sp_or_alu
+add wave -position insertpoint  \
+sim:/processor/FetchMem_comp/offset
 force -freeze sim:/processor/reset 1 0
 force -freeze sim:/processor/clk 1 0, 0 {50 ps} -r 100
 run
@@ -59,6 +80,7 @@ force -freeze sim:/processor/FetchMem_comp/memory/memory(8) b\"10111101000000000
 force -freeze sim:/processor/FetchMem_comp/memory/memory(9) b\"01111011011010000000000000000000" 0
 force -freeze sim:/processor/FetchMem_comp/memory/memory(10) b\"01001110001010000000000000000000" 0
 force -freeze sim:/processor/FetchMem_comp/memory/memory(11) b\"01110000001010000000000000000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(12) b\"10101010000000000000000000101000" 0
 run
 run
 run
@@ -78,4 +100,5 @@ run
 run
 run
 run
-
+run
+run
