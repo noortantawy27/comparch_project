@@ -37,7 +37,7 @@ begin
     -- Branch penalty - should flush IF/ID and ID/EX
     elsif branch = '1' then
         rst_if_id <= '1';
-        -- rst_id_ex <= '1';
+       -- rst_id_ex <= '1';
     -- Memory structural hazard (2nd priority)
     elsif id_ex_mem_read = '1' or id_ex_mem_write = '1' then
         rst_if_id <= '1';

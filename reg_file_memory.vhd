@@ -32,8 +32,6 @@ begin
                 memory(to_integer(unsigned(address))) <= writedata;
             end if;
 
-            readdata <= memory(to_integer(unsigned(address)));
-            instruction <= memory(to_integer(unsigned(instruction_address)));
 
             if mem_read = '1' then
                 mem_output <= readdata;
@@ -42,4 +40,6 @@ begin
             end if;
         end if;
     end process;
+    readdata <= memory(to_integer(unsigned(address)));
+    instruction <= memory(to_integer(unsigned(instruction_address)));
 end structure;
