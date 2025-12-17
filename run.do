@@ -57,6 +57,10 @@ force -freeze sim:/processor/FetchMem_comp/memory/memory(6) b\"10111001000000000
 force -freeze sim:/processor/FetchMem_comp/memory/memory(7) b\"10111100000000000000000000010000" 0
 force -freeze sim:/processor/FetchMem_comp/memory/memory(8) b\"10111101000000000000000000001100" 0
 force -freeze sim:/processor/FetchMem_comp/memory/memory(9) b\"01111011011010000000000000000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(10) b\"01001110001010000000000000000000" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(11) b\"01110000001010000000000000000000" 0
+run
+run
 run
 run
 run
