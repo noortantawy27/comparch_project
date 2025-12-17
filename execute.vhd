@@ -193,7 +193,7 @@ begin
     
     -- Calculate branch target: PC + 1 + sign-extended immediate
     branch_target <= std_logic_vector(unsigned(pc1_q) + unsigned(immediate_q));
-    pc_plus1_plus_sign_extend <= branch_target;
+    pc_plus1_plus_sign_extend <= immediate_q;
 
     --ccr store
     --akeno ccr atany bi mux ya2ema yakhod haget alu ya2ema yakhod ccr elmawgood
