@@ -57,6 +57,7 @@ end component;
 signal immediate16bits: std_logic_vector(15 downto 0);
 signal extenedimmediate32bit:std_logic_vector(31 downto 0);
 signal en1,en2: std_logic;
+signal waddress1,waddress2:std_logic_vector(2 downto 0);
 begin
     -- reg file
     regfile: reg_file 
@@ -67,8 +68,8 @@ begin
         rst=>rst,
         readaddress1=>instruction_in(23 downto 21),
         readaddress2=>instruction_in(20 downto 18),
-        writeaddress1=>mem_rb_writeaddress1,
-        writeaddress2=>mem_rb_writeaddress2,
+        writeaddress1=>waddress1,
+        writeaddress2=>waddress2,
         wenable1=>en1,
         wenable2=>en2,
         writeport1=>mem_rb_writedata1,
@@ -80,8 +81,16 @@ begin
     immediate16bits<=instruction_in(17 downto 2);
     extenedimmediate32bit<=(31 downto 16 =>immediate16bits(15))&immediate16bits;
     immediate<=extenedimmediate32bit; -- output
+
     en1<=mem_rb_regwrite1 or mem_rb_regwrite2;
     en2<=mem_rb_regwrite1 and mem_rb_regwrite2;
+
+    waddress1<= mem_rb_writeaddress2 when mem_rb_regwrite1='1' and mem_rb_regwrite2='1'
+    else mem_rb_writeaddress1;
+
+    waddress2<= mem_rb_writeaddress1 when mem_rb_regwrite1='1' and mem_rb_regwrite2='1'
+    else mem_rb_writeaddress2;
+
     -- outputs elly hat3ady 3alatool.
         writeaddress1_out<= instruction_in(26 downto 24);
         writeaddress2_out<= instruction_in(23 downto 21);
