@@ -49,7 +49,7 @@ begin
     end if;
     if ex_mem_mem_read = '1' or ex_mem_mem_write = '1' then
         rst_if_id <= '1';
-        -- pc_enable <= '0';
+        pc_enable <= '0';
     end if;
 end process;
 end architecture hazard_unit_imp;
