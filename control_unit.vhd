@@ -137,7 +137,7 @@ begin
                        "111" when others; --DON'T CARE
 
     with opcode select
-        mem_read <= '1' when POP | LDM | LDD | RET | INT | RTI | RESET | INTERRUPT,
+        mem_read <= '1' when POP | LDD | RET | INT | RTI | RESET | INTERRUPT,
                     '0' when others;
 
 end Architecture;
