@@ -802,8 +802,8 @@ excute_comp: execute
     hazard_comp: hazard_unit
     port map (
         reset => reset,
-        id_ex_mem_read => memread_id_ex_out, 
-        id_ex_mem_write => memwrite_id_ex_out,
+        id_ex_mem_read => memread_ex_mem_out, 
+        id_ex_mem_write => memwrite_ex_mem_out,
         rst_if_id => rst_if_id,
         rst_id_ex => rst_id_ex, 
         rst_ex_mem => rst_ex_mem, 
