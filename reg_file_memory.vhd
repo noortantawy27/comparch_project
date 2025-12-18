@@ -31,15 +31,11 @@ begin
             if (mem_write = '1') then
                 memory(to_integer(unsigned(address))) <= writedata;
             end if;
-
-
-            if mem_read = '1' then
-                mem_output <= readdata;
-            elsif mem_write = '0' then
-                mem_output <= instruction;
-            end if;
         end if;
     end process;
     readdata <= memory(to_integer(unsigned(address)));
     instruction <= memory(to_integer(unsigned(instruction_address)));
+    
+    mem_output <= readdata when mem_read = '1'
+    else instruction when mem_write = '0';
 end structure;

@@ -83,7 +83,7 @@ component pc is
     );
 end component;
 signal regular_pc, pc_plus_one: std_logic_vector(31 downto 0);
-signal pc_component_d, pc_component_q, readdate: std_logic_vector(31 downto 0);
+signal pc_component_d, pc_component_q: std_logic_vector(31 downto 0);
 signal mem_address, writedata, readdata: std_logic_vector(31 downto 0);
 signal sp_or_alu: std_logic_vector(31 downto 0);
 constant RESET_INSTR : std_logic_vector(31 downto 0) := "10000" & X"000000" & "000";
