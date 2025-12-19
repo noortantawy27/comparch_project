@@ -1,5 +1,5 @@
-NOT R3         
-IADD R2,R1,1 
+NOT R3    
+LDM R1,4     
+IADD R2,R1,1
 SWAP R2,R1 
 IADD R1,R1,2  
-

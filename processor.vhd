@@ -175,6 +175,7 @@ component execute is
         ex_mem_writeaddress2: in std_logic_vector(2 downto 0);
         ex_mem_alu_output: in std_logic_vector(31 downto 0);
         ex_mem_readdata1: in std_logic_vector(31 downto 0);
+        ex_mem_readdata2: in std_logic_vector(31 downto 0);
 
         -------- info from mem/wb -------------------
         mem_wb_regwrite1: in std_logic;
@@ -741,6 +742,7 @@ excute_comp: execute
         ex_mem_writeaddress2=>writeaddress2_ex_mem_out,
         ex_mem_alu_output=>alu_ex_mem_out,
         ex_mem_readdata1=>readdata1_ex_mem_out,
+        ex_mem_readdata2=>readdata2_ex_mem_out,
 
         -------- info from mem/wb -------------------
         mem_wb_regwrite1=>regwrite1_mem_wb_out,
