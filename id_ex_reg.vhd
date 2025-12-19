@@ -56,7 +56,13 @@ entity id_ex_reg is
         ccr_restore_q: out std_logic;
         ccr_restore_d: in std_logic;
         flag_enable_q: out std_logic;
-        flag_enable_d: in std_logic
+        flag_enable_d: in std_logic;
+
+        --- added rs and rt for forwarding-----
+        rs_d:in std_logic_vector(2 downto 0);
+        rs_q: out std_logic_vector(2 downto 0);
+        rt_d: in std_logic_vector(2 downto 0);
+        rt_q: out std_logic_vector(2 downto 0)
         );
 end id_ex_reg;
 architecture dff of id_ex_reg is
@@ -91,6 +97,8 @@ begin
         ccr_store_q<='0';
         ccr_restore_q<='0';
         flag_enable_q<='0';
+        rs_q<= (others=>'0');
+        rt_q<=(others=>'0');
     elsif clk'event and clk = '1' and enable = '1' then 
         inputport_q<=inputport_d;
         immediate_q<=immediate_d;
@@ -119,6 +127,8 @@ begin
         ccr_store_q<=ccr_store_d;
         ccr_restore_q<=ccr_restore_d;
         flag_enable_q<=flag_enable_d;
+        rs_q<=rs_d;
+        rt_q<=rt_d;
     end if;
 end process;
 end dff; 

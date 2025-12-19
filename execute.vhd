@@ -61,7 +61,25 @@ entity execute is
         pc_plus1_plus_sign_extend: out std_logic_vector(31 downto 0);
 
         --branch 
-        do_branch: out std_logic
+        do_branch: out std_logic;
+        ---- forwarding input from the register------
+        rs_q: in std_logic_vector(2 downto 0);
+        rt_q: in std_logic_vector(2 downto 0);
+
+        -------- info form ex/mem ------------------ --- forward from alu--
+        ex_mem_regwrite1: in std_logic;
+        ex_mem_regwrite2: in std_logic;
+        ex_mem_writeaddress1:in std_logic_vector(2 downto 0);
+        ex_mem_writeaddress2: in std_logic_vector(2 downto 0);
+        ex_mem_alu_output: in std_logic_vector(31 downto 0);
+        ex_mem_readdata1: in std_logic_vector(31 downto 0);
+        -------- info from mem/wb ------------------- -- full forward---
+        mem_wb_regwrite1: in std_logic;
+        mem_wb_regwrite2: in std_logic;
+        mem_wb_writeaddress1: in std_logic_vector(2 downto 0);
+        mem_wb_writeaddress2:in std_logic_vector(2 downto 0);
+        mem_wb_writedata: in std_logic_vector(31 downto 0);
+        mem_wb_readdata1:in std_logic_vector(31 downto 0)
         );
 
 end execute;
@@ -90,6 +108,11 @@ architecture exec of execute is
     
     -- ALU signals
     signal alu_cin_signal: std_logic;
+
+    ---- forward control-------
+    signal forwardA,forwardB: std_logic_vector(2 downto 0);
+    ---- forwarded operands----
+    signal alu_srcA,alu_srcB: std_logic_vector(31 downto 0);
 
     --instatniate ccr - Based on CCR.vhd file
     component CCR is
@@ -159,7 +182,57 @@ begin
             N => ccr_n,
             C => ccr_c
         );
-
+    -------------- process of forwarding-----------
+    process (rs_q,rt_q,ex_mem_regwrite1,ex_mem_regwrite2,ex_mem_writeaddress1,ex_mem_writeaddress2,mem_wb_regwrite1,mem_wb_regwrite2,mem_wb_writeaddress1,mem_wb_writeaddress2)
+    begin
+        -- default----------
+        forwardA<="000";
+        forwardB<="000";
+        -- OperandA---------
+        if ex_mem_regwrite1='1' and ex_mem_writeaddress1=rs_q then
+            forwardA<="001";
+        elsif ex_mem_regwrite2= '1' and ex_mem_writeaddress2=rs_q then
+            forwardA<="011";
+        elsif mem_wb_regwrite1='1' and mem_wb_writeaddress1=rs_q then
+            forwardA<="010";
+        elsif mem_wb_regwrite2='1' and mem_wb_writeaddress2=rs_q then 
+            forwardA<="100";
+        end if;
+        -- operandB------------
+        if ex_mem_regwrite1='1' and ex_mem_writeaddress1=rt_q then
+            forwardB<="001";
+        elsif ex_mem_regwrite2= '1' and ex_mem_writeaddress2=rt_q then
+            forwardB<="011";
+        elsif mem_wb_regwrite1='1' and mem_wb_writeaddress1=rt_q then
+            forwardB<="010";
+        elsif mem_wb_regwrite2='1' and mem_wb_writeaddress2=rt_q then 
+            forwardB<="100";
+        end if;
+    end process;
+    -------------- alu operands-----------------------
+    with forwardA select 
+        alu_srcA<= 
+            readdata1_q when "000",
+            ex_mem_alu_output when "001",
+            mem_wb_writedata when "010",
+            ex_mem_readdata1 when "011",
+            mem_wb_readdata1 when "100",
+            readdata1_q when others;
+    with forwardB select
+        alu_srcB<= 
+            readdata2_q when "000",
+            ex_mem_alu_output when "001",
+            mem_wb_writedata when "010",
+            ex_mem_readdata1 when "011",
+            mem_wb_readdata1 when "100",
+            readdata2_q when others;
+    
+    --alusrc da elmafrood beyekhtar ya ben add data readdata2 or immediate value(gay men sign extend)
+    -- ALU A input: always readdata1_q
+    alu_a <= alu_srcA;
+    
+    -- ALU B input: MUX between readdata2_q and immediate_q
+    alu_b <= alu_srcB when alu_src_q = '1' else immediate_q;
     -- Instantiate ALU unit
     alu_inst: alu
         generic map (N => 32)
@@ -184,12 +257,12 @@ begin
             q => sp_q
         );
 
-    --alusrc da elmafrood beyekhtar ya ben add data readdata2 or immediate value(gay men sign extend)
-    -- ALU A input: always readdata1_q
-    alu_a <= readdata1_q;
+    -- --alusrc da elmafrood beyekhtar ya ben add data readdata2 or immediate value(gay men sign extend)
+    -- -- ALU A input: always readdata1_q
+    -- alu_a <= readdata1_q;
     
-    -- ALU B input: MUX between readdata2_q and immediate_q
-    alu_b <= readdata2_q when alu_src_q = '1' else immediate_q;
+    -- -- ALU B input: MUX between readdata2_q and immediate_q
+    -- alu_b <= readdata2_q when alu_src_q = '1' else immediate_q;
     
     -- Calculate branch target: PC + 1 + sign-extended immediate
     branch_target <= std_logic_vector(unsigned(pc1_q) + unsigned(immediate_q));

@@ -18,6 +18,7 @@ entity decode is
         immediate: out std_logic_vector(31 downto 0); -- sign extended code soghayar.
         inputport_out: out std_logic_vector(31 downto 0); -- hay3ady 3alatool bas et2aked.
         writeaddress1_out, writeaddress2_out:out std_logic_vector(2 downto 0); -- hanakhdo mn el instruction w ye3ady.
+        rs_out,rt_out: out std_logic_vector(2 downto 0); --- 3ashan el execute takhodha lel forwarding unit.
         -- control signal outputs
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
@@ -91,6 +92,10 @@ begin
     waddress2<= mem_rb_writeaddress1 when mem_rb_regwrite1='1' and mem_rb_regwrite2='1'
     else mem_rb_writeaddress2;
 
+    -- rs and rt for forwarding
+    rs_out<=instruction_in(23 downto 21);
+    rt_out<=instruction_in(20 downto 18);
+    
     -- outputs elly hat3ady 3alatool.
         writeaddress1_out<= instruction_in(26 downto 24);
         writeaddress2_out<= instruction_in(23 downto 21);
