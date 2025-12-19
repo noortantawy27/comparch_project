@@ -28,7 +28,7 @@ begin
         begin
             if rst = '1' then
                 q_regs(i) <= (others => '0');
-            elsif rising_edge(clk) then
+            elsif falling_edge(clk) then
                 if wenable1 = '1' and to_integer(unsigned(writeaddress1)) = i then
                     q_regs(i) <= writeport1;
                 end if;
