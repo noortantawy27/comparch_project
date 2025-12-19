@@ -71,7 +71,8 @@ component reg_file_memory is
         address, instruction_address  : in std_logic_vector(31 downto 0);
         mem_write, mem_read : in std_logic;
         writedata : in std_logic_vector(31 downto 0);
-        mem_output : out std_logic_vector(31 downto 0)
+        mem_output : out std_logic_vector(31 downto 0);
+        mem1 : out std_logic_vector(31 downto 0)
     );
 end component;
 component pc is
@@ -80,6 +81,7 @@ component pc is
         enable: in std_logic;
         pc_src: in std_logic;
         d:in std_logic_vector(31 downto 0);
+        mem1: in std_logic_vector(31 downto 0);
         q:out std_logic_vector(31 downto 0)
     );
 end component;
@@ -87,12 +89,13 @@ signal regular_pc, pc_plus_one: std_logic_vector(31 downto 0);
 signal pc_component_d, pc_component_q: std_logic_vector(31 downto 0);
 signal mem_address, writedata, readdata: std_logic_vector(31 downto 0);
 signal sp_or_alu: std_logic_vector(31 downto 0);
+signal mem1: std_logic_vector(31 downto 0);
 constant RESET_INSTR : std_logic_vector(31 downto 0) := "10000" & X"000000" & "000";
 constant INTERRUPT_INSTR : std_logic_vector(31 downto 0) := "10011" & X"000000" & "100";
 
 begin
     -- mem
-    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata);
+    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata, mem1);
 
     -- fetch section 
     -- handling pc 
@@ -102,7 +105,7 @@ begin
     pc_component_d <=  readdata when pc_src_q = '1'
     else regular_pc;
 
-    pc_component: pc port map (reset, clk, pc_enable, pc_src_q, pc_component_d, pc_component_q);
+    pc_component: pc port map (reset, clk, pc_enable, pc_src_q, pc_component_d, mem1, pc_component_q);
 
     pc_plus_one <= std_logic_vector(to_unsigned(1 + to_integer(unsigned(pc_component_q)), 32));
 
