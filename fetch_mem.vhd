@@ -78,6 +78,7 @@ component pc is
     port(
         Rst,Clk: in std_logic;
         enable: in std_logic;
+        pc_src: in std_logic;
         d:in std_logic_vector(31 downto 0);
         q:out std_logic_vector(31 downto 0)
     );
@@ -101,7 +102,7 @@ begin
     pc_component_d <=  readdata when pc_src_q = '1'
     else regular_pc;
 
-    pc_component: pc port map (reset, clk, pc_enable, pc_component_d, pc_component_q);
+    pc_component: pc port map (reset, clk, pc_enable, pc_src_q, pc_component_d, pc_component_q);
 
     pc_plus_one <= std_logic_vector(to_unsigned(1 + to_integer(unsigned(pc_component_q)), 32));
 
@@ -126,11 +127,12 @@ begin
     else readdata2_q;
 
     -- setting mem_address
-    sp_or_alu <= sp_q when mem_add_src_q = '1'
-    else alu_q;
+    -- Change to use sp_ex_mem_out (from pipeline, not SP register)
+    sp_or_alu <= sp_q when mem_add_src_q = '1' else alu_q;
 
-    mem_address <= std_logic_vector(to_unsigned(to_integer(unsigned(offset)) + to_integer(unsigned(sp_or_alu)), 32));
-
+    mem_address <= std_logic_vector(
+        (unsigned(offset) + unsigned(sp_or_alu)) mod (2**20)
+    );
     -- setting the output to mem/wb reg
     memory_d <= readdata;
     alu_d <= alu_q;

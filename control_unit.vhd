@@ -82,7 +82,7 @@ begin
                        "00" when others;
     
     with opcode select
-        branch <= '1' when JZ | JN | JC | JMP | CALL,
+        branch <= '1' when JZ | JN | JC | JMP | CALL ,
                   '0' when others;
 
     with opcode select
@@ -98,7 +98,7 @@ begin
                        '0' when others;
     
     with opcode select
-        flag_enable <= '1' when SETC | NOT_op | INC | ADD | SUB | AND_op | IADD,
+        flag_enable <= '1' when SETC | NOT_op | INC | ADD | SUB | AND_op | IADD | RTI,
                        '0' when others;
 
     with opcode select
