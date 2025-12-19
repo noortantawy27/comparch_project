@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity processor is
 port (
     input_port: in std_logic_vector(31 downto 0);
-    reset, interrupt, clk: in std_logic;
+    reset, interrupt, clk_input: in std_logic;
     output_port: out std_logic_vector(31 downto 0);
     clk_enable: out std_logic
 );
@@ -97,7 +97,8 @@ component decode is
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
-        branch_type : out std_logic_vector(1 downto 0)
+        branch_type : out std_logic_vector(1 downto 0);
+        hlt_signal : out std_logic
     );
 end component;
 
@@ -445,7 +446,12 @@ signal outputenable_mem_wb_out : std_logic;
 signal regwrite1_mem_wb_out : std_logic;
 signal regwrite2_mem_wb_out : std_logic;
 signal inputenable_mem_wb_out : std_logic;
+
+signal clk, hlt_signal : std_logic;
 begin
+
+clk <= '0' when hlt_signal = '1'
+else clk_input;
 
 FetchMem_comp: fetch_mem 
 port map(
@@ -566,7 +572,8 @@ port map(
     set_carry => set_carry_id_ex_in, 
     clk_enable => clk_enable,
     alu_control => alu_control_id_ex_in,
-    branch_type => branch_type_id_ex_in
+    branch_type => branch_type_id_ex_in,
+    hlt_signal => hlt_signal
 );
 
 id_ex_comp: id_ex_reg

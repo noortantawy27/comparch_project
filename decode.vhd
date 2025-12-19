@@ -23,7 +23,8 @@ entity decode is
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,set_carry, clk_enable : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
-        branch_type : out std_logic_vector(1 downto 0)
+        branch_type : out std_logic_vector(1 downto 0);
+        hlt_signal : out std_logic
     );
 end decode;
 architecture behaviour of decode is
@@ -59,6 +60,14 @@ signal extenedimmediate32bit:std_logic_vector(31 downto 0);
 signal en1,en2: std_logic;
 signal waddress1,waddress2:std_logic_vector(2 downto 0);
 begin
+    process (instruction_in, rst) 
+    begin
+        if instruction_in(31 downto 27) = "00001" then
+            hlt_signal <= '1';
+        elsif rst = '1' then
+            hlt_signal <= '0';
+        end if;
+    end process;
     -- reg file
     regfile: reg_file 
     generic map (N => 32, M => 8)
