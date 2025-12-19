@@ -37,9 +37,10 @@ begin
         rst_mem_wb <= '1';
         pc_enable <= '0';
     -- Branch penalty - should flush IF/ID and ID/EX
-    elsif branch1 = '1' then
+    elsif branch2 = '1' then
         rst_if_id <= '1';
-        -- rst_id_ex <= '1';
+        rst_id_ex <= '1';
+        pc_enable <= '0';
     end if;
     -- Memory structural hazard (2nd priority)
     if id_ex_mem_read = '1' or id_ex_mem_write = '1' then

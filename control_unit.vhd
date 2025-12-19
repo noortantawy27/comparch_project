@@ -98,7 +98,7 @@ begin
                        '0' when others;
     
     with opcode select
-        flag_enable <= '1' when NOT_op | INC | ADD | SUB | AND_op | IADD,
+        flag_enable <= '1' when SETC | NOT_op | INC | ADD | SUB | AND_op | IADD,
                        '0' when others;
 
     with opcode select
