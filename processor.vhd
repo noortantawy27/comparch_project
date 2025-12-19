@@ -69,7 +69,9 @@ inputenable_d:out std_logic;
 
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
-ex_mem_sp_dec: out std_logic
+ex_mem_sp_dec: out std_logic;
+memory_busy_signal : out std_logic
+
 );
 
 end component;
@@ -353,7 +355,10 @@ port (
     rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb: out std_logic;
     branch1, branch2 : in std_logic; 
     enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb: out std_logic;
-    pc_enable: out std_logic
+    pc_enable: out std_logic;
+    if_id_instruction : in std_logic_vector(31 downto 0);
+    id_ex_writeaddress1, id_ex_writeaddress2: in std_logic_vector(2 downto 0);
+    memory_busy : in std_logic
 );
 end component;
 
@@ -445,6 +450,8 @@ signal outputenable_mem_wb_out : std_logic;
 signal regwrite1_mem_wb_out : std_logic;
 signal regwrite2_mem_wb_out : std_logic;
 signal inputenable_mem_wb_out : std_logic;
+
+signal memory_busy_signal : std_logic;
 begin
 
 FetchMem_comp: fetch_mem 
@@ -506,7 +513,9 @@ inputenable_d => inputenable_mem_wb_in,
 
 -- output sp and dec_sp for excute section
 ex_mem_sp => exmem_sp,
-ex_mem_sp_dec => exmem_decsp
+ex_mem_sp_dec => exmem_decsp,
+memory_busy_signal => memory_busy_signal
+
 );
 
 if_id_reg_comp: if_id_reg 
@@ -817,6 +826,10 @@ excute_comp: execute
         enable_id_ex => enable_id_ex, 
         enable_ex_mem => enable_ex_mem, 
         enable_mem_wb => enable_mem_wb,
-        pc_enable => pc_enable   
+        pc_enable => pc_enable,
+        if_id_instruction => instruction_if_id_out,
+        id_ex_writeaddress1 => writeaddress1_id_ex_out, 
+        id_ex_writeaddress2 =>  writeaddress2_id_ex_out,
+        memory_busy => memory_busy_signal
     );
 end architecture behaviour;

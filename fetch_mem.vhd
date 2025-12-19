@@ -59,7 +59,8 @@ inputenable_d:out std_logic;
 
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
-ex_mem_sp_dec: out std_logic
+ex_mem_sp_dec: out std_logic;
+memory_busy_signal : out std_logic
 );
 
 end entity;
@@ -71,7 +72,8 @@ component reg_file_memory is
         address, instruction_address  : in std_logic_vector(31 downto 0);
         mem_write, mem_read : in std_logic;
         writedata : in std_logic_vector(31 downto 0);
-        mem_output : out std_logic_vector(31 downto 0)
+        mem_output : out std_logic_vector(31 downto 0);
+        memory_busy : out std_logic  -- NEW SIGNAL
     );
 end component;
 component pc is
@@ -91,7 +93,17 @@ constant INTERRUPT_INSTR : std_logic_vector(31 downto 0) := "10011" & X"000000" 
 
 begin
     -- mem
-    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata);
+    memory: reg_file_memory port map (
+        clk => clk, 
+        rst => reset, 
+        address => mem_address, 
+        instruction_address => pc_component_q, 
+        mem_write => memwrite_q, 
+        mem_read => memread_q, 
+        writedata => writedata, 
+        mem_output => readdata,
+        memory_busy => memory_busy_signal
+        );
 
     -- fetch section 
     -- handling pc 

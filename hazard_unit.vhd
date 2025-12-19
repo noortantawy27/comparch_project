@@ -10,15 +10,19 @@ port (
     rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb: out std_logic;
     branch1, branch2 : in std_logic; 
     enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb: out std_logic;
-    pc_enable: out std_logic
+    pc_enable: out std_logic;
+    if_id_instruction : in std_logic_vector(31 downto 0);
+    id_ex_writeaddress1, id_ex_writeaddress2: in std_logic_vector(2 downto 0);
+    memory_busy : in std_logic
 );
 end entity hazard_unit;
 
 architecture hazard_unit_imp of hazard_unit is
 begin
-hazard_processs: process (reset, branch1, branch2, id_ex_mem_read, id_ex_mem_write,ex_mem_mem_read,ex_mem_mem_write)
+hazard_processs: process (reset, branch1, branch2, id_ex_mem_read, id_ex_mem_write,ex_mem_mem_read,ex_mem_mem_write,
+if_id_instruction,id_ex_writeaddress1,id_ex_writeaddress2,memory_busy)
 begin
-    -- Default values
+   -- Default values
     rst_if_id <= '0';
     rst_id_ex <= '0';
     rst_ex_mem <= '0';
@@ -35,21 +39,35 @@ begin
         rst_id_ex <= '1';
         rst_ex_mem <= '1';
         rst_mem_wb <= '1';
+        enable_if_id <= '0';
+        enable_id_ex <= '0';
+        enable_ex_mem <= '0';
+        enable_mem_wb <= '0';
         pc_enable <= '0';
-    -- Branch penalty - should flush IF/ID and ID/EX
-    elsif branch1 = '1' then
+        
+    -- Branch penalty
+    elsif branch2 = '1' then
         rst_if_id <= '1';
-        -- rst_id_ex <= '1';
-    end if;
-    -- Memory structural hazard (2nd priority)
-    if id_ex_mem_read = '1' or id_ex_mem_write = '1' then
-        --enable_if_id <= '0';
-        --rst_if_id <= '1';
+        rst_id_ex <= '1';
         pc_enable <= '0';
+        
+    -- LOAD-USE HAZARD
+    elsif id_ex_mem_read = '1' then
+        if (if_id_instruction(23 downto 21) = id_ex_writeaddress1 or
+            if_id_instruction(23 downto 21) = id_ex_writeaddress2 or
+            if_id_instruction(20 downto 18) = id_ex_writeaddress1 or
+            if_id_instruction(20 downto 18) = id_ex_writeaddress2) then
+            
+            pc_enable <= '0';
+            enable_if_id <= '0';
+            rst_id_ex <= '1';
+        end if;
     end if;
-    if ex_mem_mem_read = '1' or ex_mem_mem_write = '1' then
-        rst_if_id <= '1';
+    
+    -- STRUCTURAL HAZARD (memory busy)
+    if memory_busy = '1' then
         pc_enable <= '0';
+        enable_if_id <= '0';
     end if;
 end process;
 end architecture hazard_unit_imp;
