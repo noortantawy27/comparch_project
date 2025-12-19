@@ -10,6 +10,11 @@ sim:/processor/enable_if_id \
 sim:/processor/enable_id_ex \
 sim:/processor/enable_ex_mem \
 sim:/processor/enable_mem_wb \
+sim:/processor/excute_comp/exmem_decsp \
+sim:/processor/excute_comp/exmem_sp \
+sim:/processor/excute_comp/inc_sp_q \
+sim:/processor/excute_comp/inc_sp_q \
+sim:/processor/excute_comp/sp_inst/q \
 sim:/processor/instruction_if_id_in \
 sim:/processor/pc_if_id_in \
 sim:/processor/instruction_if_id_out \
@@ -24,7 +29,17 @@ add wave -position insertpoint  \
 sim:/processor/FetchMem_comp/pc_component/d \
 sim:/processor/FetchMem_comp/pc_component/q
 add wave -position insertpoint  \
-sim:/processor/decode_comp/regfile/q_regs
+sim:/processor/decode_comp/regfile/q_regs \
+sim:/processor/excute_comp/ccr_store/C_reg \
+sim:/processor/excute_comp/ccr_store/flag_enable \
+sim:/processor/excute_comp/ccr_store/N_reg \
+sim:/processor/excute_comp/ccr_store/Z_reg \
+sim:/processor/excute_comp/ccr_restore_q  \
+sim:/processor/excute_comp/input_z_ccr \
+sim:/processor/excute_comp/ccr_main/C_reg \
+sim:/processor/excute_comp/ccr_main/flag_enable \
+sim:/processor/excute_comp/ccr_main/N_reg \
+sim:/processor/excute_comp/ccr_main/Z_reg
 add wave -position insertpoint  \
 sim:/processor/alu_mem_wb_out
 add wave -position insertpoint  \
@@ -80,20 +95,25 @@ sim:/processor/write_back_comp/writeBack_out
 add wave -position insertpoint  \
 sim:/processor/write_back_comp/readData1_in \
 sim:/processor/write_back_comp/readData2_in \
+sim:/processor/FetchMem_comp/readdata \
+sim:/processor/FetchMem_comp/mem_address \
+sim:/processor/FetchMem_comp/memread_q \
+sim:/processor/FetchMem_comp/pc_src_q \
+sim:/processor/FetchMem_comp/pc_component/enable \
+sim:/processor/FetchMem_comp/pc_component_d \
+sim:/processor/FetchMem_comp/pc_component/q \
+sim:/processor/FetchMem_comp/pc_component/d \
 sim:/processor/write_back_comp/writeAddress1_in \
-sim:/processor/write_back_comp/writeAddress2_in
+sim:/processor/write_back_comp/writeAddress2_in 
 force -freeze sim:/processor/reset 1 0
 force -freeze sim:/processor/clk 1 0, 0 {50 ps} -r 100
 run
 force -freeze sim:/processor/reset 0 0
-force -freeze sim:/processor/rst_if_id 0 0
-force -freeze sim:/processor/rst_id_ex 0 0
-force -freeze sim:/processor/rst_ex_mem 0 0
-force -freeze sim:/processor/rst_mem_wb 0 0
-force -freeze sim:/processor/decode_comp/regfile/q_regs(7) x\"40\" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(4) b\"01000001000111000000000000000000" 0
-
-
+force -freeze sim:/processor/excute_comp/ccr_store/C_reg  1 0
+force -freeze sim:/processor/excute_comp/ccr_store/N_reg 1 0
+force -freeze sim:/processor/excute_comp/ccr_store/Z_reg 1 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(400) b\"0000000000000000000000000001111" 0
+force -freeze sim:/processor/FetchMem_comp/memory/memory(4) b\"11101000000000000000000000000000" 0
 run
 run
 run
@@ -102,21 +122,4 @@ run
 run
 run
 run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run
-run 
 run
