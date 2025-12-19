@@ -61,7 +61,26 @@ entity execute is
         pc_plus1_plus_sign_extend: out std_logic_vector(31 downto 0);
 
         --branch 
-        do_branch: out std_logic
+        do_branch: out std_logic;
+        ---- forwarding input from the register------
+        rs_q: in std_logic_vector(2 downto 0);
+        rt_q: in std_logic_vector(2 downto 0);
+
+        -------- info form ex/mem ------------------ --- forward from alu--
+        ex_mem_regwrite1: in std_logic;
+        ex_mem_regwrite2: in std_logic;
+        ex_mem_writeaddress1:in std_logic_vector(2 downto 0);
+        ex_mem_writeaddress2: in std_logic_vector(2 downto 0);
+        ex_mem_alu_output: in std_logic_vector(31 downto 0);
+        ex_mem_readdata1: in std_logic_vector(31 downto 0);
+        ex_mem_readdata2: in std_logic_vector(31 downto 0);
+        -------- info from mem/wb ------------------- -- full forward---
+        mem_wb_regwrite1: in std_logic;
+        mem_wb_regwrite2: in std_logic;
+        mem_wb_writeaddress1: in std_logic_vector(2 downto 0);
+        mem_wb_writeaddress2:in std_logic_vector(2 downto 0);
+        mem_wb_writedata: in std_logic_vector(31 downto 0);
+        mem_wb_readdata1:in std_logic_vector(31 downto 0)
         );
 
 end execute;
@@ -90,6 +109,11 @@ architecture exec of execute is
     
     -- ALU signals
     signal alu_cin_signal: std_logic;
+
+    ---- forward control-------
+    signal forwardA,forwardB: std_logic_vector(2 downto 0);
+    ---- forwarded operands----
+    signal alu_srcA,alu_srcB: std_logic_vector(31 downto 0);
 
     --instatniate ccr - Based on CCR.vhd file
     component CCR is
@@ -131,6 +155,11 @@ architecture exec of execute is
         );
     end component;
 
+    signal ex_mem_en1,ex_mem_en2,mem_wb_en1,mem_wb_en2 : std_logic;
+    signal ex_mem_waddress1,ex_mem_waddress2,mem_wb_waddress1,mem_wb_waddress2 : std_logic_vector(2 downto 0);
+    signal ex_mem_output : std_logic_vector(31 downto 0);
+
+    signal readdata1_output, readdata2_output : std_logic_vector(31 downto 0);
 begin
     -- Instantiate CCR unit for main flags
     ccr_main: CCR
@@ -159,7 +188,94 @@ begin
             N => ccr_n,
             C => ccr_c
         );
+    -------------- process of forwarding-----------
 
+    ex_mem_en1<=ex_mem_regwrite1 or ex_mem_regwrite2;
+    ex_mem_en2<=ex_mem_regwrite1 and ex_mem_regwrite2;
+
+    ex_mem_waddress1<= ex_mem_writeaddress2 when ex_mem_regwrite1='1' and ex_mem_regwrite2='1'
+    else ex_mem_writeaddress1;
+    ex_mem_waddress2<= ex_mem_writeaddress1 when ex_mem_regwrite1='1' and ex_mem_regwrite2='1'
+    else ex_mem_writeaddress2;
+
+    mem_wb_en1<=mem_wb_regwrite1 or mem_wb_regwrite2;
+    mem_wb_en2<=mem_wb_regwrite1 and mem_wb_regwrite2;
+
+    mem_wb_waddress1<= mem_wb_writeaddress2 when mem_wb_regwrite1='1' and mem_wb_regwrite2='1'
+    else mem_wb_writeaddress1;
+    mem_wb_waddress2<= mem_wb_writeaddress1 when mem_wb_regwrite1='1' and mem_wb_regwrite2='1'
+    else mem_wb_writeaddress2;
+
+    ex_mem_output <= ex_mem_readdata2 when ex_mem_regwrite2 = '1'
+    else ex_mem_alu_output;
+
+    process (rs_q,rt_q,ex_mem_en1,ex_mem_en2,ex_mem_waddress1,ex_mem_waddress2,mem_wb_en1,mem_wb_en2,mem_wb_waddress1,mem_wb_waddress2)
+    begin
+        -- default----------
+        forwardA<="000";
+        forwardB<="000";
+        -- OperandA---------
+        if ex_mem_en1='1' and ex_mem_waddress1=rs_q then
+            forwardA<="001";
+        elsif ex_mem_en2= '1' and ex_mem_waddress2=rs_q then
+            forwardA<="011";
+        elsif mem_wb_en1='1' and mem_wb_waddress1=rs_q then
+            forwardA<="010";
+        elsif mem_wb_en2='1' and mem_wb_waddress2=rs_q then 
+            forwardA<="100";
+        end if;
+        -- operandB------------
+        if ex_mem_en1='1' and ex_mem_waddress1=rt_q then
+            forwardB<="001";
+        elsif ex_mem_en2= '1' and ex_mem_waddress2=rt_q then
+            forwardB<="011";
+        elsif mem_wb_en1='1' and mem_wb_waddress1=rt_q then
+            forwardB<="010";
+        elsif mem_wb_en2='1' and mem_wb_waddress2=rt_q then 
+            forwardB<="100";
+        end if;
+    end process;
+    -------------- alu operands-----------------------
+    with forwardA select 
+        alu_srcA<= 
+            readdata1_q when "000",
+            ex_mem_output when "001",
+            mem_wb_writedata when "010",
+            ex_mem_readdata1 when "011",
+            mem_wb_readdata1 when "100",
+            readdata1_q when others;
+    with forwardB select
+        alu_srcB<= 
+            readdata2_q when "000",
+            ex_mem_output when "001",
+            mem_wb_writedata when "010",
+            ex_mem_readdata1 when "011",
+            mem_wb_readdata1 when "100",
+            readdata2_q when others;
+
+    with forwardA select 
+        readdata1_output<= 
+            readdata1_q when "000",
+            ex_mem_output when "001",
+            mem_wb_writedata when "010",
+            ex_mem_readdata1 when "011",
+            mem_wb_readdata1 when "100",
+            readdata1_q when others;
+    with forwardB select
+        readdata2_output<= 
+            readdata2_q when "000",
+            ex_mem_output when "001",
+            mem_wb_writedata when "010",
+            ex_mem_readdata1 when "011",
+            mem_wb_readdata1 when "100",
+            readdata2_q when others;
+    
+    --alusrc da elmafrood beyekhtar ya ben add data readdata2 or immediate value(gay men sign extend)
+    -- ALU A input: always readdata1_q
+    alu_a <= alu_srcA;
+    
+    -- ALU B input: MUX between readdata2_q and immediate_q
+    alu_b <= alu_srcB when alu_src_q = '1' else immediate_q;
     -- Instantiate ALU unit
     alu_inst: alu
         generic map (N => 32)
@@ -184,12 +300,12 @@ begin
             q => sp_q
         );
 
-    --alusrc da elmafrood beyekhtar ya ben add data readdata2 or immediate value(gay men sign extend)
-    -- ALU A input: always readdata1_q
-    alu_a <= readdata1_q;
+    -- --alusrc da elmafrood beyekhtar ya ben add data readdata2 or immediate value(gay men sign extend)
+    -- -- ALU A input: always readdata1_q
+    -- alu_a <= readdata1_q;
     
-    -- ALU B input: MUX between readdata2_q and immediate_q
-    alu_b <= readdata2_q when alu_src_q = '1' else immediate_q;
+    -- -- ALU B input: MUX between readdata2_q and immediate_q
+    -- alu_b <= readdata2_q when alu_src_q = '1' else immediate_q;
     
     -- Calculate branch target: PC + 1 + sign-extended immediate
     branch_target <= std_logic_vector(unsigned(pc1_q) + unsigned(immediate_q));
@@ -246,8 +362,8 @@ begin
     sp_d <= sp_d_temp;
     
     --el4 lines ely taht 
-    readdata1_d <= readdata1_q;
-    readdata2_d <= readdata2_q;
+    readdata1_d <= readdata1_output;
+    readdata2_d <= readdata2_output;
     writeaddress1_d <= writeaddress1_q;
     writeaddress2_d <= writeaddress2_q;
     inputport_d <= inputport_q;

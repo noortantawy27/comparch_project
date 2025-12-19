@@ -92,6 +92,8 @@ component decode is
         immediate: out std_logic_vector(31 downto 0); -- sign extended code soghayar.
         inputport_out: out std_logic_vector(31 downto 0); -- hay3ady 3alatool bas et2aked.
         writeaddress1_out,writeaddress2_out:out std_logic_vector(2 downto 0); -- hanakhdo mn el instruction w ye3ady.
+        ----
+        rs_out,rt_out: out std_logic_vector(2 downto 0);
         -- control signal outputs
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
@@ -162,7 +164,28 @@ component execute is
         pc_plus1_plus_sign_extend: out std_logic_vector(31 downto 0);
 
         --branch 
-        do_branch: out std_logic
+        do_branch: out std_logic;
+        ---- forwarding input from the register------
+        rs_q: in std_logic_vector(2 downto 0);
+        rt_q: in std_logic_vector(2 downto 0);
+
+        -------- info form ex/mem ------------------
+        ex_mem_regwrite1: in std_logic;
+        ex_mem_regwrite2: in std_logic;
+        ex_mem_writeaddress1:in std_logic_vector(2 downto 0);
+        ex_mem_writeaddress2: in std_logic_vector(2 downto 0);
+        ex_mem_alu_output: in std_logic_vector(31 downto 0);
+        ex_mem_readdata1: in std_logic_vector(31 downto 0);
+        ex_mem_readdata2: in std_logic_vector(31 downto 0);
+
+        -------- info from mem/wb -------------------
+        mem_wb_regwrite1: in std_logic;
+        mem_wb_regwrite2: in std_logic;
+        mem_wb_writeaddress1: in std_logic_vector(2 downto 0);
+        mem_wb_writeaddress2:in std_logic_vector(2 downto 0);
+        mem_wb_writedata: in std_logic_vector(31 downto 0);
+        mem_wb_readdata1:in std_logic_vector(31 downto 0)
+
         );
 
 end component;
@@ -264,7 +287,12 @@ component id_ex_reg is
         ccr_restore_q: out std_logic;
         ccr_restore_d: in std_logic;
         flag_enable_q: out std_logic;
-        flag_enable_d: in std_logic
+        flag_enable_d: in std_logic;
+        ---- 
+        rs_d:in std_logic_vector(2 downto 0);
+        rs_q: out std_logic_vector(2 downto 0);
+        rt_d: in std_logic_vector(2 downto 0);
+        rt_q: out std_logic_vector(2 downto 0)
         );
 end component;
 
@@ -388,7 +416,10 @@ signal memread_id_ex_out, mem_add_src_id_ex_out, mem_data_src_id_ex_out, sp_dec_
 signal alu_control_id_ex_out : std_logic_vector(2 downto 0);
 signal branch_type_id_ex_out : std_logic_vector(1 downto 0);
 signal alu_src_id_ex_out, branch_id_ex_out, inc_sp_id_ex_out, set_carry_id_ex_out, ccr_store_id_ex_out, ccr_restore_id_ex_out, flag_enable_id_ex_out : std_logic;
-
+---- forward signals----------
+signal rs_id_ex_in,rt_id_ex_in: std_logic_vector(2 downto 0);
+signal rs_id_ex_out:std_logic_vector(2 downto 0);
+signal rt_id_ex_out:std_logic_vector(2 downto 0);
 signal exmem_sp: std_logic_vector(31 downto 0);
 signal exmem_decsp: std_logic;
 
@@ -573,6 +604,9 @@ port map(
     clk_enable => clk_enable,
     alu_control => alu_control_id_ex_in,
     branch_type => branch_type_id_ex_in,
+    --- forward
+    rs_out=> rs_id_ex_in,
+    rt_out=>rt_id_ex_in,
     hlt_signal => hlt_signal
 );
 
@@ -634,7 +668,11 @@ id_ex_comp: id_ex_reg
         ccr_restore_q => ccr_restore_id_ex_out,
         ccr_restore_d => ccr_restore_id_ex_in,
         flag_enable_q => flag_enable_id_ex_out,
-        flag_enable_d => flag_enable_id_ex_in
+        flag_enable_d => flag_enable_id_ex_in,
+        rs_d=>rs_id_ex_in,
+        rs_q=>rs_id_ex_out,
+        rt_d=>rt_id_ex_in,
+        rt_q=>rt_id_ex_out
     );
 
 
@@ -699,7 +737,27 @@ excute_comp: execute
         pc_plus1_plus_sign_extend => pc_plus_immediate,
 
         --branch 
-        do_branch => do_branch
+        do_branch => do_branch,
+        -- forward----
+        rs_q=> rs_id_ex_out,
+        rt_q=>rt_id_ex_out,
+
+        -------- info form ex/mem ------------------
+        ex_mem_regwrite1=>regwrite1_ex_mem_out,
+        ex_mem_regwrite2=>regwrite2_ex_mem_out,
+        ex_mem_writeaddress1=>writeaddress1_ex_mem_out,
+        ex_mem_writeaddress2=>writeaddress2_ex_mem_out,
+        ex_mem_alu_output=>alu_ex_mem_out,
+        ex_mem_readdata1=>readdata1_ex_mem_out,
+        ex_mem_readdata2=>readdata2_ex_mem_out,
+
+        -------- info from mem/wb -------------------
+        mem_wb_regwrite1=>regwrite1_mem_wb_out,
+        mem_wb_regwrite2=>regwrite2_mem_wb_out,
+        mem_wb_writeaddress1=>writeaddress1_mem_wb_out,
+        mem_wb_writeaddress2=>writeaddress2_mem_wb_out,
+        mem_wb_writedata=>mem_rb_writedata1,
+        mem_wb_readdata1=>readdata1_mem_wb_out
     );
 
     ex_mem_comp: ex_mem_reg 
