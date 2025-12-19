@@ -105,8 +105,8 @@ def assemble_instruction(line, DATA_BASE):
     # -------- DATA INSTRUCTIONS (DATA_BASE OFFSET) --------
     if op == "LDM":
         rd = REG[tokens[1]]
-        addr = int(tokens[2], 16) + DATA_BASE
-        return code + rd + "000000" + imm16(hex(addr)[2:]) + "0" * 2
+        imm = imm16(tokens[2])
+        return code + rd + "000000" + imm + "0" * 2
 
     if op == "LDD":
         rd, offset, rs = REG[tokens[1]], tokens[2], REG[tokens[3]]
