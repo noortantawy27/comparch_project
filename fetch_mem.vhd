@@ -56,7 +56,9 @@ outputenable_d:out std_logic;
 regwrite1_d:out std_logic;
 regwrite2_d:out std_logic;
 inputenable_d:out std_logic;
-
+-- input from decode
+call_signal: in std_logic;
+immediate_input: in std_logic_vector(31 downto 0);
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
 ex_mem_sp_dec: out std_logic
@@ -102,7 +104,8 @@ begin
     regular_pc <= pc_plus_immediate when do_branch='1'
     else pc_plus_one;
 
-    pc_component_d <=  readdata when pc_src_q = '1'
+    pc_component_d <=  readdata when pc_src_q = '1' 
+    else immediate_input when call_signal='1'
     else regular_pc;
 
     pc_component: pc port map (reset, clk, pc_enable, pc_src_q, pc_component_d, mem1, pc_component_q);

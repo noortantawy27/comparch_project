@@ -7,6 +7,7 @@ port (
     reset: in std_logic;
     id_ex_mem_read, id_ex_mem_write: in std_logic;
     ex_mem_mem_read, ex_mem_mem_write: in std_logic;
+    call_signal: in std_logic;
     rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb: out std_logic;
     branch1, branch2 : in std_logic; 
     enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb: out std_logic;
@@ -16,7 +17,7 @@ end entity hazard_unit;
 
 architecture hazard_unit_imp of hazard_unit is
 begin
-hazard_processs: process (reset, branch1, branch2, id_ex_mem_read, id_ex_mem_write,ex_mem_mem_read,ex_mem_mem_write)
+hazard_processs: process (reset, branch1, branch2, id_ex_mem_read, id_ex_mem_write,ex_mem_mem_read,ex_mem_mem_write,call_signal)
 begin
     -- Default values
     rst_if_id <= '0';
@@ -46,6 +47,9 @@ begin
     if id_ex_mem_read = '1' or id_ex_mem_write = '1' then
         --enable_if_id <= '0';
         --rst_if_id <= '1';
+        pc_enable <= '0';
+    end if;
+    if call_signal='1' then
         pc_enable <= '0';
     end if;
     if ex_mem_mem_read = '1' or ex_mem_mem_write = '1' then

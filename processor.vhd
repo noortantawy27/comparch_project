@@ -66,7 +66,9 @@ outputenable_d:out std_logic;
 regwrite1_d:out std_logic;
 regwrite2_d:out std_logic;
 inputenable_d:out std_logic;
-
+-- input from decode
+call_signal: in std_logic;
+immediate_input: in std_logic_vector(31 downto 0);
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
 ex_mem_sp_dec: out std_logic
@@ -97,10 +99,11 @@ component decode is
         -- control signal outputs
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
-        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	set_carry, clk_enable : out std_logic;
+        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	set_carry, clk_enable, call_signal : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0);
         hlt_signal : out std_logic
+
     );
 end component;
 
@@ -381,6 +384,7 @@ port (
     reset: in std_logic;
     id_ex_mem_read, id_ex_mem_write: in std_logic;
     ex_mem_mem_read, ex_mem_mem_write: in std_logic;
+    call_signal: in std_logic;
     rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb: out std_logic;
     branch1, branch2 : in std_logic; 
     enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb: out std_logic;
@@ -479,7 +483,7 @@ signal outputenable_mem_wb_out : std_logic;
 signal regwrite1_mem_wb_out : std_logic;
 signal regwrite2_mem_wb_out : std_logic;
 signal inputenable_mem_wb_out : std_logic;
-
+signal call_signal : std_logic;
 signal clk, hlt_signal : std_logic;
 begin
 
@@ -542,7 +546,8 @@ outputenable_d => outputenable_mem_wb_in,
 regwrite1_d => regwrite1_mem_wb_in,
 regwrite2_d => regwrite2_mem_wb_in,
 inputenable_d => inputenable_mem_wb_in,
-
+call_signal => call_signal,
+immediate_input => immediate_id_ex_in,
 -- output sp and dec_sp for excute section
 ex_mem_sp => exmem_sp,
 ex_mem_sp_dec => exmem_decsp
@@ -604,6 +609,7 @@ port map(
     sp_dec => sp_dec_id_ex_in,	
     set_carry => set_carry_id_ex_in, 
     clk_enable => clk_enable,
+    call_signal=>call_signal,
     alu_control => alu_control_id_ex_in,
     branch_type => branch_type_id_ex_in,
     --- forward
@@ -877,6 +883,7 @@ excute_comp: execute
         id_ex_mem_write => memwrite_id_ex_out, 
         ex_mem_mem_read => memread_ex_mem_out, 
         ex_mem_mem_write => memwrite_ex_mem_out,
+        call_signal=> call_signal,
         rst_if_id => rst_if_id,
         rst_id_ex => rst_id_ex, 
         rst_ex_mem => rst_ex_mem, 

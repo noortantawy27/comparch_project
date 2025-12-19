@@ -6,7 +6,7 @@ entity control_unit is
         opcode : in std_logic_vector(4 downto 0);
         mem_write, mem_read, reg_write1, reg_write2, mem_to_reg, input_en, output_en : out std_logic;
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
-        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec, set_carry, clk_enable : out std_logic;
+        pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec, set_carry, clk_enable, call_signal : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0)
     );
@@ -51,9 +51,9 @@ begin
         mem_write <= '1' when PUSH | STD | CALL | INT | INTERRUPT,
                  '0' when others;
 
-    -- with opcode select
-    --     mem_read <= '1' when POP | LDM | LDD | RET | INT | RTI | RESET | INTERRUPT,
-    --              '0' when others;
+    with opcode select
+        call_signal <= '1' when CALL,
+                 '0' when others;
     
     with opcode select
         reg_write1 <= '1' when NOT_op | INC | IN_op | SWAP | ADD | SUB | AND_op | IADD | POP | LDM | LDD ,
@@ -82,7 +82,7 @@ begin
                        "00" when others;
     
     with opcode select
-        branch <= '1' when JZ | JN | JC | JMP | CALL ,
+        branch <= '1' when JZ | JN | JC | JMP ,
                   '0' when others;
 
     with opcode select
