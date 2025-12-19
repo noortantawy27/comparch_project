@@ -74,6 +74,8 @@ entity execute is
         ex_mem_alu_output: in std_logic_vector(31 downto 0);
         ex_mem_readdata1: in std_logic_vector(31 downto 0);
         ex_mem_readdata2: in std_logic_vector(31 downto 0);
+        ex_mem_inputport, ex_mem_memory_readdate: in std_logic_vector(31 downto 0);
+        ex_mem_memtoreg,ex_mem_input_enable: in std_logic;
         -------- info from mem/wb ------------------- -- full forward---
         mem_wb_regwrite1: in std_logic;
         mem_wb_regwrite2: in std_logic;
@@ -207,6 +209,8 @@ begin
     else mem_wb_writeaddress2;
 
     ex_mem_output <= ex_mem_readdata2 when ex_mem_regwrite2 = '1'
+    else ex_mem_inputport when ex_mem_input_enable = '1'
+    else ex_mem_memory_readdate when ex_mem_memtoreg = '1'
     else ex_mem_alu_output;
 
     process (rs_q,rt_q,ex_mem_en1,ex_mem_en2,ex_mem_waddress1,ex_mem_waddress2,mem_wb_en1,mem_wb_en2,mem_wb_waddress1,mem_wb_waddress2)
