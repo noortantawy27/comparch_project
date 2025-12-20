@@ -102,7 +102,7 @@ begin
                        '0' when others;
 
     with opcode select
-        pc_src <= '1' when RET | INT | RTI | RESET | INTERRUPT,
+        pc_src <= '1' when RET | INT | RTI | INTERRUPT,
                   '0' when others;
     
     with opcode select 
@@ -133,11 +133,11 @@ begin
                        "011" when NOT_op, --NOT
                        "001" when SUB, --SUB
                        "010" when AND_op, --AND
-                       "100" when PUSH | LDM | INT | RESET | INTERRUPT, --PASS
+                       "100" when PUSH | LDM | INT | INTERRUPT, --PASS
                        "111" when others; --DON'T CARE
 
     with opcode select
-        mem_read <= '1' when POP | LDD | RET | INT | RTI | RESET | INTERRUPT,
+        mem_read <= '1' when POP | LDD | RET | INT | RTI | INTERRUPT,
                     '0' when others;
 
 end Architecture;
