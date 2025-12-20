@@ -62,7 +62,11 @@ entity id_ex_reg is
         rs_d:in std_logic_vector(2 downto 0);
         rs_q: out std_logic_vector(2 downto 0);
         rt_d: in std_logic_vector(2 downto 0);
-        rt_q: out std_logic_vector(2 downto 0)
+        rt_q: out std_logic_vector(2 downto 0);
+        
+        -- handle call --
+        call_signal_d: in std_logic;
+        call_signal_q: out std_logic
         );
 end id_ex_reg;
 architecture dff of id_ex_reg is
@@ -99,6 +103,7 @@ begin
         flag_enable_q<='0';
         rs_q<= (others=>'0');
         rt_q<=(others=>'0');
+        call_signal_q <= '0';
     elsif clk'event and clk = '1' and enable = '1' then 
         inputport_q<=inputport_d;
         immediate_q<=immediate_d;
@@ -129,6 +134,7 @@ begin
         flag_enable_q<=flag_enable_d;
         rs_q<=rs_d;
         rt_q<=rt_d;
+        call_signal_q<=call_signal_d;
     end if;
 end process;
 end dff; 

@@ -297,7 +297,11 @@ component id_ex_reg is
         rs_d:in std_logic_vector(2 downto 0);
         rs_q: out std_logic_vector(2 downto 0);
         rt_d: in std_logic_vector(2 downto 0);
-        rt_q: out std_logic_vector(2 downto 0)
+        rt_q: out std_logic_vector(2 downto 0);
+                
+        -- handle call --
+        call_signal_d: in std_logic;
+        call_signal_q: out std_logic
         );
 end component;
 
@@ -483,7 +487,7 @@ signal outputenable_mem_wb_out : std_logic;
 signal regwrite1_mem_wb_out : std_logic;
 signal regwrite2_mem_wb_out : std_logic;
 signal inputenable_mem_wb_out : std_logic;
-signal call_signal : std_logic;
+signal call_signal_id_ex_in, call_signal_id_ex_out : std_logic;
 signal clk, hlt_signal : std_logic;
 begin
 
@@ -546,7 +550,7 @@ outputenable_d => outputenable_mem_wb_in,
 regwrite1_d => regwrite1_mem_wb_in,
 regwrite2_d => regwrite2_mem_wb_in,
 inputenable_d => inputenable_mem_wb_in,
-call_signal => call_signal,
+call_signal => call_signal_id_ex_in,
 immediate_input => immediate_id_ex_in,
 -- output sp and dec_sp for excute section
 ex_mem_sp => exmem_sp,
@@ -609,7 +613,7 @@ port map(
     sp_dec => sp_dec_id_ex_in,	
     set_carry => set_carry_id_ex_in, 
     clk_enable => clk_enable,
-    call_signal=>call_signal,
+    call_signal=>call_signal_id_ex_in,
     alu_control => alu_control_id_ex_in,
     branch_type => branch_type_id_ex_in,
     --- forward
@@ -680,7 +684,9 @@ id_ex_comp: id_ex_reg
         rs_d=>rs_id_ex_in,
         rs_q=>rs_id_ex_out,
         rt_d=>rt_id_ex_in,
-        rt_q=>rt_id_ex_out
+        rt_q=>rt_id_ex_out,
+        call_signal_d => call_signal_id_ex_in,
+        call_signal_q => call_signal_id_ex_out
     );
 
 
@@ -883,7 +889,7 @@ excute_comp: execute
         id_ex_mem_write => memwrite_id_ex_out, 
         ex_mem_mem_read => memread_ex_mem_out, 
         ex_mem_mem_write => memwrite_ex_mem_out,
-        call_signal=> call_signal,
+        call_signal=> call_signal_id_ex_out,
         rst_if_id => rst_if_id,
         rst_id_ex => rst_id_ex, 
         rst_ex_mem => rst_ex_mem, 

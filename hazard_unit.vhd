@@ -43,13 +43,15 @@ begin
         rst_id_ex <= '1';
         pc_enable <= '0';
     end if;
+    
+    if call_signal='1' then
+        rst_if_id <= '1';
+        pc_enable <= '0';
+    end if;
     -- Memory structural hazard (2nd priority)
     if id_ex_mem_read = '1' or id_ex_mem_write = '1' then
         --enable_if_id <= '0';
         --rst_if_id <= '1';
-        pc_enable <= '0';
-    end if;
-    if call_signal='1' then
         pc_enable <= '0';
     end if;
     if ex_mem_mem_read = '1' or ex_mem_mem_write = '1' then
