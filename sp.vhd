@@ -13,7 +13,7 @@ end sp;
 
 architecture a_sp of sp is
     constant SP_INITIAL_VALUE: std_logic_vector(n-1 downto 0) := 
-        std_logic_vector(to_unsigned(400 - 1, n));
+        std_logic_vector(to_unsigned(2**20 - 1, n));
 begin 
 process(Clk, Rst)
 begin
