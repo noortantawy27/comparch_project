@@ -102,21 +102,34 @@ sim:/processor/FetchMem_comp/pc_src_q \
 sim:/processor/FetchMem_comp/pc_component/enable \
 sim:/processor/FetchMem_comp/pc_component_d \
 sim:/processor/FetchMem_comp/pc_component/q \
-sim:/processor/FetchMem_comp/memwrite_q \
-sim:/processor/FetchMem_comp/mem_add_src_q \
-sim:/processor/FetchMem_comp/mem_address \
-sim:/processor/FetchMem_comp/mem_data_src_q \
 sim:/processor/FetchMem_comp/pc_component/d \
 sim:/processor/write_back_comp/writeAddress1_in \
 sim:/processor/write_back_comp/writeAddress2_in 
+add wave -position insertpoint  \
+sim:/processor/input_port
+force -freeze sim:/processor/input_port FFFFFFFF 0
 force -freeze sim:/processor/reset 1 0
 force -freeze sim:/processor/clk 1 0, 0 {50 ps} -r 100
 run
 force -freeze sim:/processor/reset 0 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(1) b\"11110000000000000000000000111100" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(2) b\"00111000000000000000000000000000" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(3) b\"00111001001000000000000000000000" 0
-force -freeze sim:/processor/FetchMem_comp/memory/memory(15) b\"00111010100000000000000000000000" 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
 run
 run
 run
