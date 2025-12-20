@@ -82,7 +82,10 @@ entity execute is
         mem_wb_writeaddress1: in std_logic_vector(2 downto 0);
         mem_wb_writeaddress2:in std_logic_vector(2 downto 0);
         mem_wb_writedata: in std_logic_vector(31 downto 0);
-        mem_wb_readdata1:in std_logic_vector(31 downto 0)
+        mem_wb_readdata1:in std_logic_vector(31 downto 0);
+        ---------------------------------------------
+        id_ex_interrupt_signal: in std_logic;
+        ex_mem_interrupt_signal: out std_logic
         );
 
 end execute;
@@ -388,5 +391,8 @@ begin
     -- Pass through signals
     pc1_d <= pc1_q;
     alu_d <= alu_result;
+    
+    --pass interrupt signal
+    ex_mem_interrupt_signal <= id_ex_interrupt_signal;
 
 end exec;

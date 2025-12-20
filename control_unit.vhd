@@ -8,7 +8,8 @@ entity control_unit is
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec, set_carry, clk_enable, call_signal : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
-        branch_type : out std_logic_vector(1 downto 0)
+        branch_type : out std_logic_vector(1 downto 0);
+        interrupt_signal: out std_logic
     );
 end entity control_unit;
 
@@ -102,15 +103,14 @@ begin
                        '0' when others;
 
     with opcode select
-        pc_src <= '1' when RET | INT | RTI | INTERRUPT,
+        pc_src <= '1' when RET | INT | RTI,
                   '0' when others;
     
     with opcode select 
-        mem_data_src <= '1' when CALL | INT | INTERRUPT,
-                        '0' when others;
-    
+        mem_data_src <= '1' when CALL | INT,
+                        '0' when others;              
     with opcode select
-        mem_add_src <= '1' when PUSH | POP | CALL | RET |RTI, 
+        mem_add_src <= '1' when PUSH | POP | CALL | RET |RTI| INTERRUPT, 
                        '0' when others;
     
     with opcode select 
@@ -137,7 +137,9 @@ begin
                        "111" when others; --DON'T CARE
 
     with opcode select
-        mem_read <= '1' when POP | LDD | RET | INT | RTI | INTERRUPT,
+        mem_read <= '1' when POP | LDD | RET | INT | RTI,
                     '0' when others;
-
+    with opcode select
+        interrupt_signal <= '1' when INTERRUPT,
+                            '0' when others;
 end Architecture;

@@ -71,7 +71,8 @@ call_signal: in std_logic;
 immediate_input: in std_logic_vector(31 downto 0);
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
-ex_mem_sp_dec: out std_logic
+ex_mem_sp_dec: out std_logic;
+interrupt_signal_ex_mem: in std_logic
 );
 
 end component;
@@ -102,7 +103,8 @@ component decode is
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,	set_carry, clk_enable, call_signal : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0);
-        hlt_signal : out std_logic
+        hlt_signal : out std_logic;
+        interrupt_signal: out std_logic
 
     );
 end component;
@@ -189,7 +191,9 @@ component execute is
         mem_wb_writeaddress1: in std_logic_vector(2 downto 0);
         mem_wb_writeaddress2:in std_logic_vector(2 downto 0);
         mem_wb_writedata: in std_logic_vector(31 downto 0);
-        mem_wb_readdata1:in std_logic_vector(31 downto 0)
+        mem_wb_readdata1:in std_logic_vector(31 downto 0);
+        id_ex_interrupt_signal: in std_logic;
+        ex_mem_interrupt_signal: out std_logic
 
         );
 
@@ -293,6 +297,9 @@ component id_ex_reg is
         ccr_restore_d: in std_logic;
         flag_enable_q: out std_logic;
         flag_enable_d: in std_logic;
+        ----
+        interrupt_signal_q: out std_logic;
+        interrupt_signal_d: in std_logic;
         ---- 
         rs_d:in std_logic_vector(2 downto 0);
         rs_q: out std_logic_vector(2 downto 0);
@@ -347,7 +354,9 @@ component ex_mem_reg is
         pc_src_q: out std_logic;
         pc_src_d: in std_logic;
         branch_q: out std_logic;
-        branch_d: in std_logic
+        branch_d: in std_logic;
+        interrupt_signal_q: out std_logic;
+        interrupt_signal_d: in std_logic
         );
 end component;
 
@@ -489,6 +498,9 @@ signal regwrite2_mem_wb_out : std_logic;
 signal inputenable_mem_wb_out : std_logic;
 signal call_signal_id_ex_in, call_signal_id_ex_out : std_logic;
 signal clk, hlt_signal : std_logic;
+signal interrupt_signal_id_ex_in, interrupt_signal_ex_mem_in : std_logic;
+signal interrupt_signal_ex_mem_out,interupt_signal_id_ex_out : std_logic;
+
 begin
 
 clk <= '0' when hlt_signal = '1'
@@ -554,7 +566,8 @@ call_signal => call_signal_id_ex_in,
 immediate_input => immediate_id_ex_in,
 -- output sp and dec_sp for excute section
 ex_mem_sp => exmem_sp,
-ex_mem_sp_dec => exmem_decsp
+ex_mem_sp_dec => exmem_decsp,
+interrupt_signal_ex_mem => interrupt_signal_ex_mem_out
 );
 
 if_id_reg_comp: if_id_reg 
@@ -619,7 +632,9 @@ port map(
     --- forward
     rs_out=> rs_id_ex_in,
     rt_out=>rt_id_ex_in,
-    hlt_signal => hlt_signal
+    hlt_signal => hlt_signal,
+    interrupt_signal => interrupt_signal_id_ex_in
+
 );
 
 id_ex_comp: id_ex_reg
@@ -686,7 +701,9 @@ id_ex_comp: id_ex_reg
         rt_d=>rt_id_ex_in,
         rt_q=>rt_id_ex_out,
         call_signal_d => call_signal_id_ex_in,
-        call_signal_q => call_signal_id_ex_out
+        call_signal_q => call_signal_id_ex_out,
+        interrupt_signal_d => interrupt_signal_id_ex_in,
+        interrupt_signal_q => interupt_signal_id_ex_out
     );
 
 
@@ -774,7 +791,9 @@ excute_comp: execute
         mem_wb_writeaddress1=>writeaddress1_mem_wb_out,
         mem_wb_writeaddress2=>writeaddress2_mem_wb_out,
         mem_wb_writedata=>mem_rb_writedata1,
-        mem_wb_readdata1=>readdata1_mem_wb_out
+        mem_wb_readdata1=>readdata1_mem_wb_out,
+        id_ex_interrupt_signal => interupt_signal_id_ex_out,
+        ex_mem_interrupt_signal => interrupt_signal_ex_mem_in
     );
 
     ex_mem_comp: ex_mem_reg 
@@ -821,7 +840,9 @@ excute_comp: execute
         pc_src_q => pc_src_ex_mem_out,
         pc_src_d => pc_src_ex_mem_in,
         branch_q => branch_ex_mem_out,
-        branch_d => do_branch
+        branch_d => do_branch,
+        interrupt_signal_q => interrupt_signal_ex_mem_out,
+        interrupt_signal_d => interrupt_signal_ex_mem_in
     );
 
     mem_wb_comp: mem_wb_reg 

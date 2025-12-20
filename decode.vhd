@@ -25,7 +25,8 @@ entity decode is
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,set_carry, clk_enable, call_signal : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0);
-        hlt_signal : out std_logic
+        hlt_signal : out std_logic;
+        interrupt_signal: out std_logic
     );
 end decode;
 architecture behaviour of decode is
@@ -52,7 +53,8 @@ component control_unit
         branch, alu_src, CCR_store,	CCR_restore, flag_enable : out std_logic;
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,set_carry, clk_enable, call_signal : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
-        branch_type : out std_logic_vector(1 downto 0)
+        branch_type : out std_logic_vector(1 downto 0);
+        interrupt_signal: out std_logic
     );
 end component;
 -- signals needed.
@@ -135,7 +137,8 @@ begin
         clk_enable=>clk_enable,
         call_signal=>call_signal,
         alu_control=>alu_control,
-        branch_type=>branch_type
+        branch_type=>branch_type,
+        interrupt_signal=>interrupt_signal
     );
 
     

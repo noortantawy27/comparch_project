@@ -57,6 +57,8 @@ entity id_ex_reg is
         ccr_restore_d: in std_logic;
         flag_enable_q: out std_logic;
         flag_enable_d: in std_logic;
+        interrupt_signal_q: out std_logic;
+        interrupt_signal_d: in std_logic;
 
         --- added rs and rt for forwarding-----
         rs_d:in std_logic_vector(2 downto 0);
@@ -104,6 +106,7 @@ begin
         rs_q<= (others=>'0');
         rt_q<=(others=>'0');
         call_signal_q <= '0';
+        interrupt_signal_q<='0';
     elsif clk'event and clk = '1' and enable = '1' then 
         inputport_q<=inputport_d;
         immediate_q<=immediate_d;
@@ -135,6 +138,7 @@ begin
         rs_q<=rs_d;
         rt_q<=rt_d;
         call_signal_q<=call_signal_d;
+        interrupt_signal_q<=interrupt_signal_d;
     end if;
 end process;
 end dff; 

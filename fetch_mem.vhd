@@ -61,7 +61,8 @@ call_signal: in std_logic;
 immediate_input: in std_logic_vector(31 downto 0);
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
-ex_mem_sp_dec: out std_logic
+ex_mem_sp_dec: out std_logic;
+interrupt_signal_ex_mem: in std_logic
 );
 
 end entity;
@@ -74,7 +75,8 @@ component reg_file_memory is
         mem_write, mem_read : in std_logic;
         writedata : in std_logic_vector(31 downto 0);
         mem_output : out std_logic_vector(31 downto 0);
-        mem1 : out std_logic_vector(31 downto 0)
+        mem1 : out std_logic_vector(31 downto 0);
+        mem2:out std_logic_vector(31 downto 0)
     );
 end component;
 component pc is
@@ -91,13 +93,14 @@ signal regular_pc, pc_plus_one: std_logic_vector(31 downto 0);
 signal pc_component_d, pc_component_q: std_logic_vector(31 downto 0);
 signal mem_address, writedata, readdata: std_logic_vector(31 downto 0);
 signal sp_or_alu: std_logic_vector(31 downto 0);
-signal mem1: std_logic_vector(31 downto 0);
+signal mem1,mem2: std_logic_vector(31 downto 0);
+
 constant RESET_INSTR : std_logic_vector(31 downto 0) := "10000" & X"000000" & "000";
 constant INTERRUPT_INSTR : std_logic_vector(31 downto 0) := "10011" & X"000000" & "100";
 
 begin
     -- mem
-    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata, mem1);
+    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata, mem1,mem2);
 
     -- fetch section 
     -- handling pc 
@@ -106,6 +109,7 @@ begin
 
     pc_component_d <=  readdata when pc_src_q = '1' 
     else immediate_input when call_signal='1'
+    else mem2 when interrupt='1'
     else regular_pc;
 
     pc_component: pc port map (reset, clk, pc_enable, pc_src_q, pc_component_d, mem1, pc_component_q);
@@ -130,6 +134,7 @@ begin
 
     -- setting write data
     writedata <= pc1_q when mem_data_src_q = '1'
+    else std_logic_vector(unsigned(pc1_q)-1) when interrupt_signal_ex_mem = '1'
     else readdata2_q;
 
     -- setting mem_address
