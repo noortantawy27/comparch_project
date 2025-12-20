@@ -7,7 +7,7 @@ port (
     reset: in std_logic;
     id_ex_mem_read, id_ex_mem_write: in std_logic;
     ex_mem_mem_read, ex_mem_mem_write: in std_logic;
-    call_signal: in std_logic;
+    call_signal,int_signal: in std_logic;
     rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb: out std_logic;
     branch1, branch2 : in std_logic; 
     enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb: out std_logic;
@@ -44,7 +44,7 @@ begin
         pc_enable <= '0';
     end if;
     
-    if call_signal='1' then
+    if call_signal='1' or int_signal ='1' then
         rst_if_id <= '1';
         pc_enable <= '0';
     end if;

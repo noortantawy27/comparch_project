@@ -26,7 +26,9 @@ entity decode is
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0);
         hlt_signal : out std_logic;
-        interrupt_signal: out std_logic
+        interrupt_signal: out std_logic;
+        int_signal: out std_logic;
+        index: out std_logic
     );
 end decode;
 architecture behaviour of decode is
@@ -54,7 +56,8 @@ component control_unit
         pc_src, mem_data_src, mem_add_src, sp_inc, sp_dec,set_carry, clk_enable, call_signal : out std_logic;
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0);
-        interrupt_signal: out std_logic
+        interrupt_signal: out std_logic;
+        int_signal: out std_logic
     );
 end component;
 -- signals needed.
@@ -112,7 +115,7 @@ begin
         writeaddress2_out<= instruction_in(23 downto 21);
         inputport_out<=inputport_in;
         pc_out<=pc_in;
-    
+    index <= instruction_in(2);
     -- control unit
     controlunit: control_unit port map (
         opcode=>instruction_in(31 downto 27),
@@ -138,7 +141,8 @@ begin
         call_signal=>call_signal,
         alu_control=>alu_control,
         branch_type=>branch_type,
-        interrupt_signal=>interrupt_signal
+        interrupt_signal=>interrupt_signal,
+        int_signal=>int_signal
     );
 
     

@@ -62,7 +62,9 @@ immediate_input: in std_logic_vector(31 downto 0);
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
 ex_mem_sp_dec: out std_logic;
-interrupt_signal_ex_mem: in std_logic
+interrupt_signal_ex_mem: in std_logic;
+int_signal: in std_logic;
+index:in std_logic
 );
 
 end entity;
@@ -76,7 +78,9 @@ component reg_file_memory is
         writedata : in std_logic_vector(31 downto 0);
         mem_output : out std_logic_vector(31 downto 0);
         mem1 : out std_logic_vector(31 downto 0);
-        mem2:out std_logic_vector(31 downto 0)
+        mem2:out std_logic_vector(31 downto 0);
+        mem3:out std_logic_vector(31 downto 0);
+        mem4:out std_logic_vector(31 downto 0)
     );
 end component;
 component pc is
@@ -93,14 +97,15 @@ signal regular_pc, pc_plus_one: std_logic_vector(31 downto 0);
 signal pc_component_d, pc_component_q: std_logic_vector(31 downto 0);
 signal mem_address, writedata, readdata: std_logic_vector(31 downto 0);
 signal sp_or_alu: std_logic_vector(31 downto 0);
-signal mem1,mem2: std_logic_vector(31 downto 0);
+signal mem1,mem2,mem3,mem4: std_logic_vector(31 downto 0);
+
 
 constant RESET_INSTR : std_logic_vector(31 downto 0) := "10000" & X"000000" & "000";
 constant INTERRUPT_INSTR : std_logic_vector(31 downto 0) := "10011" & X"000000" & "100";
 
 begin
     -- mem
-    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata, mem1,mem2);
+    memory: reg_file_memory port map (clk, reset, mem_address, pc_component_q, memwrite_q, memread_q, writedata, readdata, mem1,mem2,mem3,mem4);
 
     -- fetch section 
     -- handling pc 
@@ -110,6 +115,8 @@ begin
     pc_component_d <=  readdata when pc_src_q = '1' 
     else immediate_input when call_signal='1'
     else mem2 when interrupt='1'
+    else mem3 when int_signal='1' and index='0'
+    else mem4 when int_signal='1' and index='1'
     else regular_pc;
 
     pc_component: pc port map (reset, clk, pc_enable, pc_src_q, pc_component_d, mem1, pc_component_q);

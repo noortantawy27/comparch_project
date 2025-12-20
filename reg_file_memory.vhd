@@ -14,7 +14,9 @@ entity reg_file_memory is
         mem_output : out std_logic_vector(N-1 downto 0);
         memory_busy : out std_logic;
         mem1 : out std_logic_vector(N-1 downto 0);
-        mem2:out std_logic_vector(N-1 downto 0)
+        mem2:out std_logic_vector(N-1 downto 0);
+        mem3:out std_logic_vector(N-1 downto 0);
+        mem4:out std_logic_vector(N-1 downto 0)
     );
 end reg_file_memory;
 
@@ -89,4 +91,6 @@ begin
     memory_busy <= internal_memory_busy;
     mem1 <= memory(0);
     mem2 <= memory(1);
+    mem3<= memory(2);
+    mem4<= memory(3);
 end structure;

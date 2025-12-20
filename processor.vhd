@@ -72,7 +72,9 @@ immediate_input: in std_logic_vector(31 downto 0);
 -- output sp and dec_sp for excute section
 ex_mem_sp: out std_logic_vector(31 downto 0);
 ex_mem_sp_dec: out std_logic;
-interrupt_signal_ex_mem: in std_logic
+interrupt_signal_ex_mem: in std_logic;
+int_signal: in std_logic;
+index:in std_logic
 );
 
 end component;
@@ -104,7 +106,9 @@ component decode is
         alu_control : out std_logic_vector(2 downto 0);
         branch_type : out std_logic_vector(1 downto 0);
         hlt_signal : out std_logic;
-        interrupt_signal: out std_logic
+        interrupt_signal: out std_logic;
+        int_signal: out std_logic;
+        index: out std_logic
 
     );
 end component;
@@ -308,7 +312,9 @@ component id_ex_reg is
                 
         -- handle call --
         call_signal_d: in std_logic;
-        call_signal_q: out std_logic
+        call_signal_q: out std_logic;
+        int_signal_d: in std_logic;
+        int_signal_q: out std_logic
         );
 end component;
 
@@ -397,7 +403,7 @@ port (
     reset: in std_logic;
     id_ex_mem_read, id_ex_mem_write: in std_logic;
     ex_mem_mem_read, ex_mem_mem_write: in std_logic;
-    call_signal: in std_logic;
+    call_signal,int_signal: in std_logic;
     rst_if_id, rst_id_ex, rst_ex_mem, rst_mem_wb: out std_logic;
     branch1, branch2 : in std_logic; 
     enable_if_id, enable_id_ex, enable_ex_mem, enable_mem_wb: out std_logic;
@@ -500,7 +506,8 @@ signal call_signal_id_ex_in, call_signal_id_ex_out : std_logic;
 signal clk, hlt_signal : std_logic;
 signal interrupt_signal_id_ex_in, interrupt_signal_ex_mem_in : std_logic;
 signal interrupt_signal_ex_mem_out,interupt_signal_id_ex_out : std_logic;
-
+signal int_signal,index: std_logic;
+signal int_signal_id_ex_out: std_logic;
 begin
 
 clk <= '0' when hlt_signal = '1'
@@ -567,7 +574,9 @@ immediate_input => immediate_id_ex_in,
 -- output sp and dec_sp for excute section
 ex_mem_sp => exmem_sp,
 ex_mem_sp_dec => exmem_decsp,
-interrupt_signal_ex_mem => interrupt_signal_ex_mem_out
+interrupt_signal_ex_mem => interrupt_signal_ex_mem_out,
+int_signal=>int_signal,
+index=>index
 );
 
 if_id_reg_comp: if_id_reg 
@@ -633,7 +642,9 @@ port map(
     rs_out=> rs_id_ex_in,
     rt_out=>rt_id_ex_in,
     hlt_signal => hlt_signal,
-    interrupt_signal => interrupt_signal_id_ex_in
+    interrupt_signal => interrupt_signal_id_ex_in,
+    int_signal=>int_signal,
+    index=>index
 
 );
 
@@ -703,7 +714,9 @@ id_ex_comp: id_ex_reg
         call_signal_d => call_signal_id_ex_in,
         call_signal_q => call_signal_id_ex_out,
         interrupt_signal_d => interrupt_signal_id_ex_in,
-        interrupt_signal_q => interupt_signal_id_ex_out
+        interrupt_signal_q => interupt_signal_id_ex_out,
+        int_signal_d => int_signal,
+        int_signal_q => int_signal_id_ex_out
     );
 
 
@@ -921,6 +934,7 @@ excute_comp: execute
         enable_id_ex => enable_id_ex, 
         enable_ex_mem => enable_ex_mem, 
         enable_mem_wb => enable_mem_wb,
-        pc_enable => pc_enable   
+        pc_enable => pc_enable,
+        int_signal=>int_signal_id_ex_out   
     );
 end architecture behaviour;
