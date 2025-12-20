@@ -15,7 +15,9 @@ entity CCR is
         -- Outputs (to branch instructions / control)
         Z: out std_logic;
         N: out std_logic;
-        C: out std_logic
+        C: out std_logic;
+        branch_type: in std_logic_vector(1 downto 0);
+        do_branch: in std_logic
     );
 end CCR;
 
@@ -37,6 +39,17 @@ begin
                 Z_reg <= alu_Z;
                 N_reg <= alu_N;
                 C_reg <= alu_C;
+            end if;
+            if do_branch = '1' then
+                if branch_type = "01" then
+                    Z_reg <= '0';
+                elsif  branch_type = "11" then
+                    C_reg <= '0';
+                elsif  branch_type = "10" then
+                    N_reg <= '0';
+                end if;
+                    
+                    
             end if;
         end if;
     end process;

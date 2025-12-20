@@ -6,7 +6,7 @@
 
 .org 0	# means the code start at address zero, this could be written in 
 # several places in the file and the assembler should handle it
-
+1
 LDM R0, 1
 LDM R1, AAAA
 LDM R2, FFFF

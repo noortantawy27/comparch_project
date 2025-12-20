@@ -2,6 +2,7 @@ vsim -gui work.processor
 add wave -position insertpoint  \
 sim:/processor/reset \
 sim:/processor/clk \
+sim:/processor/clk_enable \
 sim:/processor/rst_if_id \
 sim:/processor/rst_id_ex \
 sim:/processor/rst_ex_mem \
@@ -106,12 +107,54 @@ sim:/processor/FetchMem_comp/pc_component/d \
 sim:/processor/write_back_comp/writeAddress1_in \
 sim:/processor/write_back_comp/writeAddress2_in 
 add wave -position insertpoint  \
-sim:/processor/input_port
-force -freeze sim:/processor/input_port FFFFFFFF 0
+sim:/processor/input_port \
+sim:/processor/output_port \
+sim:/processor/decode_comp/hlt_signal
 force -freeze sim:/processor/reset 1 0
-force -freeze sim:/processor/clk 1 0, 0 {50 ps} -r 100
+force -freeze sim:/processor/clk_input 1 0, 0 {50 ps} -r 100
 run
 force -freeze sim:/processor/reset 0 0
+force -freeze sim:/processor/input_port x\"00000030\" 0
+run
+force -freeze sim:/processor/input_port x\"00000050\" 0
+run
+force -freeze sim:/processor/input_port x\"00000100\" 0
+run
+force -freeze sim:/processor/input_port x\"00000300\" 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+force -freeze sim:/processor/input_port x\"00000070\" 0
+
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
 run
 run
 run

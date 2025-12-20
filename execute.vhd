@@ -131,7 +131,9 @@ architecture exec of execute is
             alu_C: in std_logic;
             Z: out std_logic;
             N: out std_logic;
-            C: out std_logic
+            C: out std_logic;
+            branch_type: in std_logic_vector(1 downto 0);
+            do_branch: in std_logic
         );
     end component;
     
@@ -165,6 +167,8 @@ architecture exec of execute is
     signal ex_mem_output : std_logic_vector(31 downto 0);
 
     signal readdata1_output, readdata2_output : std_logic_vector(31 downto 0);
+
+    signal do_branch_signal : std_logic;
 begin
     -- Instantiate CCR unit for main flags
     ccr_main: CCR
@@ -177,7 +181,9 @@ begin
             alu_C => input_c_ccr,
             Z => Z_reg,
             N => N_reg,
-            C => C_reg
+            C => C_reg,
+            branch_type => branch_type_q,
+            do_branch => do_branch_signal
         );
 
     -- Instantiate CCR unit for storing flags (backup copy)
@@ -191,7 +197,9 @@ begin
             alu_C => C_reg,
             Z => ccr_z,
             N => ccr_n,
-            C => ccr_c
+            C => ccr_c,
+            branch_type => "00",
+            do_branch => '0'
         );
     -------------- process of forwarding-----------
 
@@ -361,7 +369,8 @@ begin
     --law heya bi 10
     --law heya 01 zero
     --ben and el brancht with branch control signal
-    do_branch <= branchtype and branch_q;
+    do_branch_signal <= branchtype and branch_q;
+    do_branch <= do_branch_signal;
     
     --sp
     sp_inc_amount <= std_logic_vector(unsigned(sp_q) + 1) when inc_sp_q = '1' else sp_q;
